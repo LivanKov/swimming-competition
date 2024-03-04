@@ -1,39 +1,32 @@
 package DataLayer;
 
-import DataLayer.Host.Judge;
-
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class Rating {
 
-    private Judge judge;
     private Swimmer swimmer;
     private Dive dive;
 
-    private final double SCORE;
+    private ArrayList<Double> scores;
 
-    public Rating(Judge judge, Swimmer swimmer, Dive dive){
-        this.judge = judge;
+    public Rating(Swimmer swimmer, Dive dive, ArrayList<Double> scores){
         this.swimmer = swimmer;
         this.dive = dive;
-        DecimalFormat df = new DecimalFormat("#.#");
-        String formattedValue = df.format(Math.random()*10);
-        this.SCORE = Double.parseDouble(formattedValue);
+        this.scores = scores;
     }
 
     public Dive getDive() {
-        return dive;
+        return this.dive;
     }
-
-    public double getSCORE() {
-        return SCORE;
-    }
-
-    public Judge getJudge() {
-        return judge;
-    }
-
     public Swimmer getSwimmer() {
-        return swimmer;
+        return this.swimmer;
+    }
+
+    public double calculateTotalSum(){
+        double sum = 0;
+        for(int i = 0;i<this.scores.size();i++){
+            sum = sum + this.scores.get(i);
+        }
+        return sum;
     }
 }

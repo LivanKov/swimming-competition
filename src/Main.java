@@ -1,12 +1,21 @@
 import DataLayer.Swimmer;
-import Parser.Parser;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        Parser parser = new Parser("./Competition.txt");
-        //testMethod
-        parser.convertFileToObjects();
-        Swimmer swimmer1 = new Swimmer(2001,"Ivan", null,30,50,true);
-
+        Swimmer a = new Swimmer(2000,"Andrew","British");
+        Swimmer b = new Swimmer(2001,"Alex","American");
+        ArrayList<Integer>testArray = new ArrayList<>();
+        testArray.add(1);
+        testArray.add(2);
+        testArray.add(3);
+        for(int i = 0;i<testArray.size();i++){
+            testArray.get(i);
+        }
     }
+
+
+
+
 }
