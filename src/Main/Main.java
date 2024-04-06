@@ -7,6 +7,7 @@ import UI.Window.CompetitionCreationWindow;
 
 public class Main {
     public static void main(String[] args) {
+        //Easter egg
         Competition competition = new Competition();
         EventBus eventBus = new EventBus();
         CompetitionStartingWindow wrapper = new CompetitionStartingWindow();
