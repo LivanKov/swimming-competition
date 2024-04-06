@@ -12,11 +12,21 @@ public class Dive {
         this.difficulty = difficulty;
     }
 
+    public Dive(){};
+
     public double getDifficulty() {
         return difficulty;
     }
 
     public String getDiveId() {
         return diveId;
+    }
+
+    public void setDiveId(String diveId) {
+        this.diveId = diveId;
+    }
+
+    public void setDifficulty(double difficulty) {
+        this.difficulty = difficulty;
     }
 }
