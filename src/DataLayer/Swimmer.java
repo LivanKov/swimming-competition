@@ -3,6 +3,7 @@ package DataLayer;
 public class Swimmer {
 
     private int yearOfBirth;
+
     private String name;
 
     private double TDD;

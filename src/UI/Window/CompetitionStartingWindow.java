@@ -1,6 +1,5 @@
 package UI.Window;
 
-import DataLayer.Competition;
 import UI.EventBus;
 
 import javax.swing.*;
@@ -8,17 +7,11 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
 
 public class CompetitionStartingWindow extends JFrame implements CompetitionWindow {
 
     private final static int WIDTH = 500;
     private final static int HEIGHT = 500;
-
-    private Competition competition;
 
     private JTextArea textArea;
 
@@ -30,6 +23,7 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
         this.setVisible(true);
         this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setTitle("v1.0.0");
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel upperPanel = new JPanel();
         Border upperPanelBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
@@ -76,28 +70,6 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
         fileChooser.setControlButtonsAreShown(false);
         this.setVisible(true);
     }
-
-    public void exportDocument(){
-        String fileName = competition.getName()+" "+ LocalDate.now()+".txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            int height = 2+((competition.getDivesPerSwimmer()+1)*competition.getSwimmers().size());
-            String titleDate = competition.getCompetitionName()+" - "+LocalDate.now();
-            writer.write(titleDate);
-            String upperBar = "╠════════════════════════";
-            for(int i = 0;i < competition.getNumberOfJudges();i++){
-                upperBar.concat("═════");
-            }
-            upperBar.concat("════════════════════════╣");
-            String columnNames = "║ RA ║ Name ║ Dive ║ DD ║";
-            for(int i = 0;i < competition.getNumberOfJudges();i++){
-                columnNames.concat(" J"+(i+1)+" ║");
-            }
-            columnNames.concat(" PE ║ PT ║ TDD ║ Total  ║");
-
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-    }
     @Override
     public void addEventBus(EventBus eventBus){
         this.eventBus = eventBus;
@@ -107,16 +79,11 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
     @Override
     public void triggerEvent() {
         this.textArea.append("Created a custom competition\n");
-        this.textArea.append(this.competition.getSwimmers().size()+" participants");
-        this.textArea.append(this.competition.getDives().size()+" unique dives");
+        this.textArea.append(eventBus.getCompetitionObject().getSwimmers().size()+" participants");
+        this.textArea.append(eventBus.getCompetitionObject().getDives().size()+" unique dives");
         this.textArea.append("Calculating results\n");
         this.exportButton.setEnabled(true);
         this.exportButton.setBackground(Color.GREEN);
-    }
-
-    @Override
-    public void setCompetition(Competition competition) {
-        this.competition = competition;
     }
 
     @Override

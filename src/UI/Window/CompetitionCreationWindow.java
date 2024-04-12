@@ -30,10 +30,6 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
 
     private Stack<DiveCreationComponent>divePanelStack;
 
-    private String competitionName;
-
-    private Competition competition;
-
     private EventBus eventBus;
 
     private JButton cancelButton;
@@ -47,14 +43,18 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
     private JPanel swimmerContainer;
 
     private JPanel diveContainer;
+
     private JTextField matchNameField;
+
+    private JScrollPane playerScrollPane;
+
+    private JScrollPane diveScrollPane;
 
     public CompetitionCreationWindow() {
         this.amountOfDivesPerPerson = 0;
         this.amountOfJudges = 0;
         this.playerPanelStack = new Stack<>();
         this.divePanelStack = new Stack<>();
-        this.competitionName = "";
         this.setVisible(false);
         this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setTitle("v1.0.0");
@@ -72,9 +72,9 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
 
     private void initializeContainers(){
         this.diveContainer = new JPanel();
-        this.diveContainer.setLayout(new BoxLayout(diveContainer,BoxLayout.Y_AXIS));
+        this.diveContainer.setLayout(new GridLayout(0, 1));
         this.swimmerContainer = new JPanel();
-        this.swimmerContainer.setLayout(new BoxLayout(swimmerContainer,BoxLayout.Y_AXIS));
+        this.swimmerContainer.setLayout(new GridLayout(2, 1));
     }
 
     private void initializeRemainingComponents(){
@@ -107,15 +107,13 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         lowerPanel.add(lowerLowerPanel);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         this.add(mainPanel);
-        JScrollPane playerScrollPane = new JScrollPane (this.swimmerContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        JScrollPane diverScrollPane = new JScrollPane(this.diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        playerScrollPane.setBackground(Color.DARK_GRAY);
-        diverScrollPane.setBackground(Color.DARK_GRAY);
+        this.playerScrollPane = new JScrollPane (this.swimmerContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        this.diveScrollPane = new JScrollPane(this.diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         gbc.gridy = 1;
         gbc.weightx = 5.0;
         gbc.weighty = 8.0;
-        playerCreationPanel.add(playerScrollPane, gbc);
-        diveCreationPanel.add(diverScrollPane,gbc);
+        playerCreationPanel.add(this.playerScrollPane, gbc);
+        diveCreationPanel.add(this.diveScrollPane,gbc);
         mainPanel.add(playerCreationPanel);
         mainPanel.add(diveCreationPanel);
         mainPanel.add(lowerPanel);
@@ -150,11 +148,18 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                     DiverCreationComponent.setPanelCounter(DiverCreationComponent.getPanelCounter() - 1);
                     swimmerContainer.remove(panel);
                 }else{
-                    System.out.println("Added");
                     DiverCreationComponent.setPanelCounter(DiverCreationComponent.getPanelCounter() + 1);
                     var panel = new DiverCreationComponent();
                     playerPanelStack.push(panel);
                     swimmerContainer.add(panel);
+                    panel.setSize(100,100);
+                }
+                if(playerPanelStack.size() == 1){
+                    playerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    swimmerContainer.setLayout(new GridLayout(2, 1));
+                }else{
+                    playerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    swimmerContainer.setLayout(new GridLayout(playerPanelStack.size(), 1));
                 }
                 swimmerContainer.revalidate();
                 swimmerContainer.repaint();
@@ -182,6 +187,13 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                     divePanelStack.push(panel);
                     diveContainer.add(panel);
                 }
+                if(divePanelStack.size() == 1){
+                    diveScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    diveContainer.setLayout(new GridLayout(2, 1));
+                }else{
+                    diveScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    diveContainer.setLayout(new GridLayout(divePanelStack.size(), 1));
+                }
                 diveContainer.revalidate();
                 diveContainer.repaint();
             }
@@ -193,20 +205,12 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
             @Override
             public void actionPerformed(ActionEvent e) {
                 Competition competition = thisFrame.fillCompetition();
-                for(Swimmer s : competition.getSwimmers()){
-                    System.out.println("Name: " + s.getName()+", Year: " + s.getYearOfBirth());
-                }
-                for(Dive d : competition.getDives()){
-                    System.out.println("ID: " + d.getDiveId()+", Difficulty: " + d.getDifficulty());
-                }
-                System.out.println("Number of Judges: " + competition.getNumberOfJudges());
-                System.out.println("Number of Dives: " + competition.getDivesPerSwimmer());
-                competitionName = matchNameField.getText();
-
-                if(competitionName.isEmpty()){
+                String compName = matchNameField.getText();
+                if(competition == null || competition.getCompetitionName().isEmpty()){
                     matchNameField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.RED));
-                }else if(competition != null){
-                    var window = new CompetitionMatchingWindow();
+                }else{
+                    eventBus.setCompetitionObject(competition);
+                    eventBus.showMatchingWindow();
                 }
             }
         };
@@ -238,6 +242,7 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         return true;
     }
     private Competition fillCompetition(){
+        Competition newComp = new Competition();
         ArrayList<JPanel> stackPlayerList = new ArrayList<JPanel>(playerPanelStack);
         int amountOfSwimmers = stackPlayerList.size();
         ArrayList<JPanel> stackDiveList = new ArrayList<JPanel>(divePanelStack);
@@ -274,7 +279,7 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                                         ((JTextField) component).setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.RED));
                                     }
                                 }
-                                this.competition.addSwimmer(s);
+                                newComp.addSwimmer(s);
                             }else{
                                 Dive d = (Dive)recentInstance;
                                 if(d != null){
@@ -285,7 +290,7 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                                         ((JTextField) component).setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.RED));
                                     }
                                 }
-                                this.competition.addDive(d);
+                                newComp.addDive(d);
                             }
                         }
                         ((JTextField) component).setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.GREEN));
@@ -297,9 +302,10 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         if(emptyFieldFound){
             return null;
         }
-        this.competition.setDivesPerSwimmer(amountOfDivesPerPerson);
-        this.competition.setNumberOfJudges(amountOfJudges);
-        return this.competition;
+        newComp.setDivesPerSwimmer(amountOfDivesPerPerson);
+        newComp.setNumberOfJudges(amountOfJudges);
+        newComp.setCompetitionName(matchNameField.getText());
+        return newComp;
     }
 
     @Override
@@ -310,12 +316,6 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         this.eventBus = eventBus;
         eventBus.subscribe(this);
     }
-
-    @Override
-    public void setCompetition(Competition competition) {
-        this.competition = competition;
-    }
-
     @Override
     public void start() {
         this.initializeButtons();
