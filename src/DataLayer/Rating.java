@@ -60,4 +60,12 @@ public class Rating {
     public void generateScores(){
         this.scores.addAll(IntStream.range(0,7).mapToObj(x -> Math.ceil(Math.random()*10)).collect(Collectors.toList()));
     }
+
+    public String toString(){
+        return "[ Swimmer: " +
+                this.swimmer.toString()+"\n"+
+                "Dive" +
+                this.dive.toString()+"\n"+
+                " ]";
+    }
 }

@@ -296,6 +296,10 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                         ((JTextField) component).setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.GREEN));
                     }
                     counter++;
+                }else if(component instanceof JComboBox<?>){
+                    Swimmer s = (Swimmer)recentInstance;
+                    String nationality =  (String)((JComboBox)component).getSelectedItem();
+                    s.setNationality(nationality);
                 }
             }
         }

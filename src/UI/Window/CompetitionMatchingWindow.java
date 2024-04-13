@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class CompetitionMatchingWindow extends JFrame implements CompetitionWindow {
 
-    private static final int WIDTH = 450;
+    private static final int WIDTH = 300;
 
     private static final int HEIGHT = 500;
 
@@ -23,8 +23,10 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
 
     private Map<Swimmer, ArrayList<Dive>> swimmerDiveMap = new HashMap<Swimmer,ArrayList<Dive>>();
 
-    public CompetitionMatchingWindow(){
+    private ArrayList<MatchingComponent> matchingComponentList;
 
+    public CompetitionMatchingWindow(){
+        this.matchingComponentList = new ArrayList<MatchingComponent>();
     }
 
     private void initializeMainContainer(){
@@ -36,7 +38,7 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         JPanel buttonContainer = new JPanel();
 
         JLabel titleLabel = new JLabel("Assign dives to specific players");
-        mainContainer.setLayout(new GridLayout(this.eventBus.getCompetitionObject().getSwimmers().size(),1));
+        mainContainer.setLayout(new GridLayout(2,1));
         GridBagConstraints gbcUpper = new GridBagConstraints();
         gbcUpper.gridx = 0;
         gbcUpper.gridy = 0;
@@ -59,6 +61,11 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Matching finished");
+                for(MatchingComponent m : matchingComponentList){
+                    eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
+                    System.out.println("Added match between " + m.getSwimmer().getName()+ " and "+m.getSelectedDives());
+                }
                 eventBus.finishMatching();
             }
         });
@@ -72,7 +79,9 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         ArrayList<Dive> diveList = this.eventBus.getCompetitionObject().getDives();
         for(Swimmer s : this.eventBus.getCompetitionObject().getSwimmers()){
             System.out.println("Swimmer");
-            mainContainer.add(new MatchingComponent(s,diveList));
+            MatchingComponent matchComp = new MatchingComponent(s, diveList);
+            matchingComponentList.add(matchComp);
+            mainContainer.add(matchComp);
         }
     }
 

@@ -6,10 +6,11 @@ public class Swimmer {
 
     private String name;
 
+    private String nationality;
     private double TDD;
     private double totalPoints;
 
-    public Swimmer(String name, int yearOfBirth){
+    public Swimmer(String name, int yearOfBirth, String nationality){
         this.yearOfBirth = yearOfBirth;
         this.name = name;
     }
@@ -48,7 +49,21 @@ public class Swimmer {
         return this.totalPoints;
     }
 
+    public void setNationality(String nationality) { this.nationality = nationality; }
+
+    public String getNationality() { return nationality; }
+
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public String toString(){
+        return "[ Name: " +
+                this.getName() +
+                ", Year: " +
+                this.getYearOfBirth() +
+                ", Nationality: " +
+                this.getNationality() +
+                " ]";
     }
 }

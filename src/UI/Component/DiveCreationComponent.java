@@ -25,7 +25,7 @@ public class DiveCreationComponent extends JPanel {
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(firstContainer);
         this.add(secondContainer);
-        this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        this.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.GRAY));
         firstContainer.add(counterLabel);
         firstContainer.add(nameLabel);
         firstContainer.add(nameField);

@@ -29,4 +29,12 @@ public class Dive {
     public void setDifficulty(double difficulty) {
         this.difficulty = difficulty;
     }
+
+    public String toString(){
+        return "[ Id: " +
+                this.getDiveId() +
+                ", Difficulity: " +
+                this.getDifficulty() +
+                " ]";
+    }
 }
