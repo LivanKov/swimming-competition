@@ -13,7 +13,6 @@ public class Main {
         CompetitionStartingWindow startingWindow = new CompetitionStartingWindow();
         CompetitionCreationWindow creationWindow = new CompetitionCreationWindow();
         CompetitionMatchingWindow matchingWindow = new CompetitionMatchingWindow();
-
         startingWindow.addEventBus(eventBus);
         creationWindow.addEventBus(eventBus);
         matchingWindow.addEventBus(eventBus);

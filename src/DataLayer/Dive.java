@@ -6,7 +6,6 @@ public class Dive {
 
     private double difficulty;
 
-
     public Dive(String diveId, double difficulty){
         this.diveId = diveId;
         this.difficulty = difficulty;
@@ -36,5 +35,10 @@ public class Dive {
                 ", Difficulity: " +
                 this.getDifficulty() +
                 " ]";
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getDiveId().hashCode();
     }
 }

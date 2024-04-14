@@ -1,17 +1,15 @@
 package DataLayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Competition {
 
     private String competitionName;
 
-    private ArrayList<Swimmer>swimmers;
+    private HashMap<String, Swimmer>swimmerNameMap;
 
-    private ArrayList<Dive> dives;
+    private HashMap<String,Dive> diveIdMap;
 
     private HashMap<Swimmer,ArrayList<Dive>>swimmerDiveMatching;
 
@@ -24,19 +22,22 @@ public class Competition {
 
     public Competition(){
         this.competitionName = "";
-        this.swimmers = new ArrayList<>();
-        this.dives = new ArrayList<>();
+        this.swimmerNameMap = new HashMap<String,Swimmer>();
+        this.diveIdMap = new HashMap<String,Dive>();
         this.numberOfJudges = 0;
         this.divesPerSwimmer = 0;
         this.swimmerDiveMatching = new HashMap<>();
         this.swimmerRatingMatch = new HashMap<>();
     }
     public void addSwimmer(Swimmer s){
-        this.swimmers.add(s);
+        this.swimmerNameMap.put(s.getName(), s);
     }
 
-    public void addDive(Dive d){
-        this.dives.add(d);
+    public void addDive(Dive d) throws IllegalArgumentException{
+        if(this.diveIdMap.containsKey(d.getDiveId())){
+            throw new IllegalArgumentException("Cannot use the same id twice");
+        }
+        this.diveIdMap.put(d.getDiveId(),d);
     }
 
     public String getName() {
@@ -68,12 +69,10 @@ public class Competition {
     }
 
     public ArrayList<Dive> getDives() {
-        return dives;
+        return new ArrayList<Dive>(diveIdMap.values());
     }
 
-    public ArrayList<Swimmer> getSwimmers() {
-        return swimmers;
-    }
+    public ArrayList<Swimmer> getSwimmers() { return new ArrayList<Swimmer>(swimmerNameMap.values()); }
 
     public void setCompetitionName(String competitionName) {
         this.competitionName = competitionName;
@@ -99,12 +98,258 @@ public class Competition {
         }
     }
 
+    private void assignDefaultSwimmerDiveMatching(){
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Anthony Harding"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("5154B"),
+                        this.diveIdMap.get("407C"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("207C"),
+                        this.diveIdMap.get("5353B"),
+                        this.diveIdMap.get("109C"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("James Heatley"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("205B"),
+                        this.diveIdMap.get("407C"),
+                        this.diveIdMap.get("5154B"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("5337D"),
+                        this.diveIdMap.get("109C"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Andrew John Capobianco"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("5154B"),
+                        this.diveIdMap.get("109C"),
+                        this.diveIdMap.get("205B"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("5337D"),
+                        this.diveIdMap.get("407C"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Jordan Houlden"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("5154B"),
+                        this.diveIdMap.get("407C"),
+                        this.diveIdMap.get("109C"),
+                        this.diveIdMap.get("5337D"),
+                        this.diveIdMap.get("207C"),
+                        this.diveIdMap.get("307C"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Yona Knight-Wisdom"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("107B"),
+                        this.diveIdMap.get("407C"),
+                        this.diveIdMap.get("5152B"),
+                        this.diveIdMap.get("205B"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("5154B"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Patrick Hausding"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("205B"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("5154B"),
+                        this.diveIdMap.get("407C"),
+                        this.diveIdMap.get("109C"),
+                        this.diveIdMap.get("5156B"),
+                }
+        )));
+
+        this.swimmerDiveMatching.put(swimmerNameMap.get("Alexis Jandard"),new ArrayList<>(Arrays.asList(
+                new Dive[]{
+                        this.diveIdMap.get("405B"),
+                        this.diveIdMap.get("107B"),
+                        this.diveIdMap.get("205B"),
+                        this.diveIdMap.get("5337D"),
+                        this.diveIdMap.get("307C"),
+                        this.diveIdMap.get("5154B"),
+                }
+        )));
+    }
+
+    private void assignDefaultRatings(){
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Anthony Harding"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 5.5, 6.0, 6.0, 6.0, 6.0, 6.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.5, 5.5, 6.0, 5.5, 5.0, 5.5, 5.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 7.0, 6.0, 7.5, 6.5, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("207C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 6.5, 6.5, 6.5, 6.0, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("5353B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 5.5, 6.5, 6.0, 6.5, 6.5, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Anthony Harding"), this.diveIdMap.get("109C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 6.0, 6.0, 7.0, 7.0, 7.0 }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("James Heatley"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("205B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.5, 8.0, 7.5, 7.0, 7.5, 7.5, 7.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.0, 4.5, 4.5, 4.5, 4.0, 4.5, 4.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 6.5, 6.5, 6.0, 6.0, 6.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.0, 6.5, 7.5, 7.0, 7.5, 6.5, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("5337D"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 7.5, 6.5, 7.0, 7.0, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("James Heatley"), this.diveIdMap.get("109C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.5, 6.0, 6.5, 5.0, 5.0, 5.0, 5.0  }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Andrew John Capobianco"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7., 7.0, 6.5, 7.0, 7.0, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("109C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 6.0, 6.0, 5.5, 6.5, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("205B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.0, 5.5, 5.5, 6.0, 5.5, 6.0, 6.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 4.0, 3.5, 3.5, 4.0, 3.0, 4.0, 4.0  }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("5337D"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.5, 7.0, 7.0, 7.0, 7.5, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Andrew John Capobianco"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.5, 7.0, 7.0, 7.0, 7.5, 7.5   }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Jordan Houlden"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 5.5, 6.0, 6.0, 6.5, 6.5, 6.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 2.0, 2.0, 2.5, 2.0, 2.0, 2.0, 2.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("109C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.5, 7.5, 7.5, 6.5, 7.5, 7.0, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("5337D"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 5.0, 6.5, 6.0, 6.5, 6.5  }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("207C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 7.0, 8.0, 7.5, 7.5, 8.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Jordan Houlden"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 5.5, 5.5, 6.0, 6.0, 6.0 }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Yona Knight-Wisdom"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("107B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 8.0, 8.5, 7.5, 7.5, 8.0, 7.5, 7.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.5, 5.5, 6.0, 5.5, 5.5, 4.5, 5.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("5152B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.5, 8.0, 8.0, 7.5, 7.5, 7.5, 8.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("205B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.5, 7.0, 8.0, 7.0, 7.5, 7.0, 7.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 4.0, 3.5, 3.5, 3.5, 3.0, 3.5, 4.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Yona Knight-Wisdom"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 6.5, 7.0, 7.0, 6.5, 6.5, 7.0  }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Patrick Hausding"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("205B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 6.5, 7.0, 7.0, 7.0, 7.0  }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 7.0, 6.0, 6.5, 6.5, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 7.0, 6.5, 6.0, 6.5, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("407C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.5, 7.0, 7.0, 7.0, 6.5, 7.0, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("109C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 4.5, 4.5, 4.5, 5.0, 4.5, 4.5, 5.0  }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Patrick Hausding"), this.diveIdMap.get("5156B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 4.0, 4.0, 4.0, 4.5, 4.0, 4.0, 4.5   }
+                        )))
+                }
+        )));
+
+        this.swimmerRatingMatch.put(this.swimmerNameMap.get("Alexis Jandard"),new ArrayList<>(Arrays.asList(
+                new Rating[]{
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("405B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.0, 7.5, 7.5, 7.0, 7.5, 7.0, 7.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("107B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.0, 7.0, 6.5, 6.0, 6.5, 6.0, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("205B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 7.0, 6.5, 7.0, 7.5, 7.0, 6.5, 7.0 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("5337D"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 5.0, 5.0, 4.5, 4.5, 4.0, 5.0, 5.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("307C"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 5.5, 6.0, 6.0, 6.5, 6.0, 6.5 }
+                        ))),
+                        new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("5154B"),new ArrayList<>(Arrays.asList(
+                                new Double[]{ 6.0, 6.5, 6.0, 5.5, 5.5, 5.5, 6.0 }
+                        )))
+                }
+        )));
+    }
+
     public void calculateScore(){
         assignTDD();
         assignTotalScore();
     }
 
     public void conductCompetition(){
+
+    }
+
+    public void generateRandomJudgeScores(){
 
     }
 
@@ -119,42 +364,27 @@ public class Competition {
                 new Swimmer("Patrick Hausding", 1989,"GER"),
                 new Swimmer("Alexis Jandard", 1997,"FRA")
         });
-        this.swimmers = new ArrayList<>(defaultSwimmerList);
+        this.swimmerNameMap = new HashMap<String,Swimmer>(defaultSwimmerList.stream().collect(Collectors.toMap(Swimmer::getName, x->x)));
 
-
-    }
-
-    public static void main(String[]args){
-        /*Competition testCompetition = new Competition();
-        testCompetition.setCompetitionName("Test");
-        testCompetition.setDivesPerSwimmer(6);
-        testCompetition.setNumberOfJudges(7);
-        //Swimmer testSwimmer = new Swimmer("Anthony Harding",2001);
-        Dive d1 = new Dive("5154B",3.4);
-        Dive d2 = new Dive("407C",3.4);
-        Dive d3 = new Dive("307C",3.5);
-        Dive d4 = new Dive("207C",3.6);
-        Dive d5 = new Dive("5353B",3.3);
-        Dive d6 = new Dive("109C",3.8);
-        /*Rating r1 = new Rating(testSwimmer,d1,new ArrayList<>(Arrays.asList(6.0, 5.5, 6.0, 6.0, 6.0, 6.0, 6.0)));
-        Rating r2 = new Rating(testSwimmer,d2,new ArrayList<>(Arrays.asList(5.5, 5.5, 6.0, 5.5, 5.0, 5.5, 5.5)));
-        Rating r3 = new Rating(testSwimmer,d3,new ArrayList<>(Arrays.asList(6.5, 7.0, 7.0, 6.0, 7.5, 6.5, 7.0)));
-        Rating r4 = new Rating(testSwimmer,d4,new ArrayList<>(Arrays.asList(6.0, 6.5, 6.5, 6.5, 6.5, 6.0, 6.5)));
-        Rating r5 = new Rating(testSwimmer,d5,new ArrayList<>(Arrays.asList(6.5, 5.5, 6.5, 6.0, 6.5, 6.5, 6.5)));
-        Rating r6 = new Rating(testSwimmer,d6,new ArrayList<>(Arrays.asList(6.5, 7.0, 6.0, 6.0, 7.0, 7.0, 7.0)));
-
-        testCompetition.addSwimmerDiveMatch(testSwimmer,new ArrayList<>(Arrays.asList(d1, d2, d3, d4, d5, d6)));
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r1);
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r2);
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r3);
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r4);
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r5);
-        testCompetition.addSwimmerRatingMatch(testSwimmer,r6);
-        testCompetition.calculateScore();
-        for(Rating r : testCompetition.getRatingsForSwimmer(testSwimmer)){
-            System.out.println(r.getPT());
-        }
-        System.out.println(testSwimmer.getTotalPoints());
-        System.out.println(testSwimmer.getTDD());*/
+        HashSet<Dive> defaultDiveList = new HashSet<Dive>(Arrays.asList(
+                new Dive("5154B", 3.4),
+                new Dive("407C", 3.4),
+                new Dive("307C", 3.5),
+                new Dive("207C", 3.6 ),
+                new Dive("5353B", 3.3),
+                new Dive("109C",3.8),
+                new Dive("205B", 3.0),
+                new Dive("5337D" ,3.5 ),
+                new Dive("205B", 3.0),
+                new Dive("107B",3.1),
+                new Dive("5152B", 3.0 ),
+                new Dive("307C", 3.5),
+                new Dive("5156B",3.9),
+                new Dive("405B", 3.0)
+        ));
+        this.diveIdMap = new HashMap<>(defaultDiveList.stream().collect(Collectors.toMap(Dive::getDiveId, x->x)));
+        this.assignDefaultSwimmerDiveMatching();
+        this.assignDefaultRatings();
+        this.calculateScore();
     }
 }

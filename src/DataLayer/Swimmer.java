@@ -7,7 +7,9 @@ public class Swimmer {
     private String name;
 
     private String nationality;
+
     private double TDD;
+
     private double totalPoints;
 
     public Swimmer(String name, int yearOfBirth, String nationality){
@@ -65,5 +67,10 @@ public class Swimmer {
                 ", Nationality: " +
                 this.getNationality() +
                 " ]";
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }
