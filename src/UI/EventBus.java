@@ -50,6 +50,7 @@ public class EventBus {
     }
 
     public void finishMatching() {
+        competitionObject.assignRandomRatings();
         for (CompetitionWindow frame : frameList) {
             if (frame instanceof CompetitionMatchingWindow) {
                 frame.exit();

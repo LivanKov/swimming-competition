@@ -60,7 +60,7 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         finishButton.addActionListener(e -> {
             for (MatchingComponent m : matchingComponentList) {
                 eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
-                System.out.println("Added match between " + m.getSwimmer().getName() + " and " + m.getSelectedDives());
+                System.out.println("Added match between " + m.getSwimmer() + " and " + m.getSelectedDives());
             }
             eventBus.finishMatching();
         });

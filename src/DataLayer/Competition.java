@@ -1,6 +1,7 @@
 package DataLayer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Competition {
 
@@ -66,6 +67,21 @@ public class Competition {
             throw new IllegalArgumentException("Cannot use the same id twice! Faulty Id: " + d.getDiveId());
         }
         this.diveIdMap.put(d.getDiveId(), d);
+    }
+
+    public void assignRandomRatings(){
+        for(Swimmer s : this.swimmerDiveMatching.keySet()){
+            this.swimmerRatingMatch.put(s,new ArrayList<Rating>());
+            for(Dive d : this.swimmerDiveMatching.get(s)){
+                ArrayList<Double>ratingList = new Random().doubles(7, 0.0, 10.0)
+                        .boxed()
+                        .collect(Collectors.toCollection(ArrayList::new));
+                Rating newRating = new Rating(s,d,ratingList);
+                swimmerRatingMatch.get(s).add(newRating);
+            }
+            System.out.println(swimmerRatingMatch.get(s));
+        }
+        this.calculateScore();
     }
 
     public String getName() {
@@ -300,6 +316,10 @@ public class Competition {
                         6.0, 5.5, 6.0, 6.0, 6.5, 6.0, 6.5))),
                 new Rating(this.swimmerNameMap.get("Alexis Jandard"), this.diveIdMap.get("5154B"), new ArrayList<>(Arrays.asList(
                         6.0, 6.5, 6.0, 5.5, 5.5, 5.5, 6.0))))));
+    }
+
+    public void createRatings(){
+
     }
 
     public void calculateScore() {

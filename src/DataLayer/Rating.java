@@ -73,8 +73,10 @@ public class Rating {
     public String toString() {
         return "[ Swimmer: " +
                 this.swimmer.toString() + "\n" +
-                "Dive" +
+                "Dive:" +
                 this.dive.toString() + "\n" +
+                "Scores:" +
+                this.scores +
                 " ]";
     }
 }
