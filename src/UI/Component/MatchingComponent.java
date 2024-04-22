@@ -21,16 +21,18 @@ public class MatchingComponent extends JPanel {
         this.diveList = list;
         this.checkBoxes = new ArrayList<DiveCheckBoxComponent>();
         this.createComponent();
+        this.setSize(400,100);
     }
 
     private void createComponent() {
         this.setLayout(new GridLayout(1, 2));
-        this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+        this.setPreferredSize(new Dimension(400, 50));
         JPanel swimmerContainer = new JPanel();
         JPanel diveContainer = new JPanel();
         swimmerContainer.setLayout(new BoxLayout(swimmerContainer, BoxLayout.Y_AXIS));
-        diveContainer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-        diveContainer.setLayout(new GridLayout(2, 1));
+        //diveContainer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        diveContainer.setLayout(new GridLayout(0, 1));
         JScrollPane diveContainerScroll = new JScrollPane(diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(swimmerContainer);
         this.add(diveContainerScroll);

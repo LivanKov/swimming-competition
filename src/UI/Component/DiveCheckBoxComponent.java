@@ -5,7 +5,7 @@ import DataLayer.Dive;
 import javax.swing.*;
 import java.awt.*;
 
-public class DiveCheckBoxComponent extends JPanel implements CustomComponent {
+public class DiveCheckBoxComponent extends JPanel {
 
     private final Dive dive;
 
@@ -18,7 +18,7 @@ public class DiveCheckBoxComponent extends JPanel implements CustomComponent {
 
     private void createComponent() {
         this.setLayout(new GridLayout(1, 2));
-
+        this.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
         this.checkBox = new JCheckBox();
         JLabel idLabel = new JLabel("ID: " + dive.getDiveId());
         JLabel difficultyLabel = new JLabel("Difficulty: " + dive.getDifficulty());

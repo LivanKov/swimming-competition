@@ -51,7 +51,7 @@ public class DiverCreationComponent extends JPanel {
         this.add(firstContainer);
         this.add(secondContainer);
         this.add(thirdContainer);
-        this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
+        this.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         firstContainer.add(counterLabel);
         firstContainer.add(nameLabel);
         firstContainer.add(nameField);

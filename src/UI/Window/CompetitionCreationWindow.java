@@ -54,6 +54,7 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         this.divePanelStack = new Stack<>();
         this.setVisible(false);
         this.setSize(new Dimension(WIDTH, HEIGHT));
+        this.setResizable(false);
         this.setTitle("v1.0.0");
     }
 
