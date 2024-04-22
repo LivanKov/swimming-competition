@@ -5,17 +5,15 @@ import UI.EventBus;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class CompetitionStartingWindow extends JFrame implements CompetitionWindow {
 
     private final static int WIDTH = 500;
     private final static int HEIGHT = 500;
 
-    private JTextArea textArea;
+    private final JTextArea textArea;
 
-    private JButton exportButton;
+    private final JButton exportButton;
 
     private EventBus eventBus;
 
@@ -49,14 +47,18 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
 
         customCompButtonContainer.add(createCustomCompetitionButton);
         defaultCompButtonContainer.add(createDefaultCompetitionButton);
-        createCustomCompetitionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eventBus.showMatchCreatorWindow();
-            }
+        createCustomCompetitionButton.addActionListener(e -> {
+            eventBus.showMatchCreatorWindow();
+        });
+        createDefaultCompetitionButton.addActionListener(e -> {
+            eventBus.createDefaultCompetition();
         });
         this.exportButton = new JButton("Export File");
         this.exportButton.setEnabled(false);
+        exportButton.addActionListener(e -> {
+            System.out.println("Event checked");
+            eventBus.printCompetitionResults();
+        });
         upperRightPanel.setLayout(new GridBagLayout());
         upperLeftPanel.add(customCompButtonContainer);
         upperLeftPanel.add(defaultCompButtonContainer);
@@ -70,24 +72,26 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
         fileChooser.setControlButtonsAreShown(false);
         this.setVisible(true);
     }
+
     @Override
-    public void addEventBus(EventBus eventBus){
+    public void addEventBus(EventBus eventBus) {
         this.eventBus = eventBus;
         this.eventBus.subscribe(this);
     }
 
     @Override
     public void triggerEvent() {
-        this.textArea.append("Created a custom competition\n");
-        this.textArea.append(eventBus.getCompetitionObject().getSwimmers().size()+" participants");
-        this.textArea.append(eventBus.getCompetitionObject().getDives().size()+" unique dives");
-        this.textArea.append("Calculating results\n");
+        this.textArea.append("Created a competition\n");
+        this.textArea.append(eventBus.getCompetitionObject().getSwimmers().size() + " participants\n");
+        this.textArea.append(eventBus.getCompetitionObject().getDives().size() + " unique dives\n");
+        this.textArea.append("Calculating results...\n");
         this.exportButton.setEnabled(true);
         this.exportButton.setBackground(Color.GREEN);
     }
 
     @Override
-    public void start() {}
+    public void start() {
+    }
 
     @Override
     public void exit() {

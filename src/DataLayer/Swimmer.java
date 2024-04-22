@@ -12,54 +12,60 @@ public class Swimmer {
 
     private double totalPoints;
 
-    public Swimmer(String name, int yearOfBirth, String nationality){
+    public Swimmer(String name, int yearOfBirth, String nationality) {
         this.yearOfBirth = yearOfBirth;
         this.name = name;
+        this.nationality = nationality;
     }
 
-    public Swimmer(){}
+    public Swimmer() {
+    }
 
     public String getName() {
         return name;
-    }
-
-    public double getTDD() {
-        return TDD;
-    }
-
-    public double getTotalPoints() {
-        return totalPoints;
-    }
-
-    public int getYearOfBirth() {
-        return yearOfBirth;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public double getTDD() {
+        return TDD;
+    }
+
     public void setTDD(double TDD) {
         this.TDD = TDD;
+    }
+
+    public double getTotalPoints() {
+        return totalPoints;
     }
 
     public void setTotalPoints(double totalPoints) {
         this.totalPoints = totalPoints;
     }
 
-    public double getTotalScore(){
-        return this.totalPoints;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
-
-    public void setNationality(String nationality) { this.nationality = nationality; }
-
-    public String getNationality() { return nationality; }
 
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public String toString(){
+    public double getTotalScore() {
+        return this.totalPoints;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String toString() {
         return "[ Name: " +
                 this.getName() +
                 ", Year: " +

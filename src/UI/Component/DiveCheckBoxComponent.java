@@ -7,33 +7,33 @@ import java.awt.*;
 
 public class DiveCheckBoxComponent extends JPanel implements CustomComponent {
 
-    private Dive dive;
+    private final Dive dive;
 
     private JCheckBox checkBox;
 
-    public DiveCheckBoxComponent(Dive dive){
+    public DiveCheckBoxComponent(Dive dive) {
         this.dive = dive;
         this.createComponent();
     }
 
-    private void createComponent(){
-        this.setLayout(new GridLayout(1,2));
+    private void createComponent() {
+        this.setLayout(new GridLayout(1, 2));
 
         this.checkBox = new JCheckBox();
-        JLabel idLabel = new JLabel("ID: "+dive.getDiveId());
-        JLabel difficultyLabel = new JLabel("Difficulty: "+dive.getDifficulty());
+        JLabel idLabel = new JLabel("ID: " + dive.getDiveId());
+        JLabel difficultyLabel = new JLabel("Difficulty: " + dive.getDifficulty());
         JPanel checkBoxContainer = new JPanel();
         JPanel labelContainer = new JPanel();
         this.add(checkBoxContainer);
         this.add(labelContainer);
-        this.setSize(100,100);
+        this.setSize(100, 100);
         checkBoxContainer.add(checkBox);
         labelContainer.add(idLabel);
         labelContainer.add(difficultyLabel);
-        labelContainer.setLayout(new GridLayout(2,1));
+        labelContainer.setLayout(new GridLayout(2, 1));
     }
 
-    public boolean isSelected(){
+    public boolean isSelected() {
         return this.checkBox.isSelected();
     }
 

@@ -7,12 +7,12 @@ import java.util.stream.IntStream;
 
 public class Rating {
 
-    private Swimmer swimmer;
-    private Dive dive;
-    private ArrayList<Double> scores;
+    private final Swimmer swimmer;
+    private final Dive dive;
+    private final ArrayList<Double> scores;
     private double PT;
 
-    public Rating(Swimmer s, Dive dive, ArrayList<Double> scores){
+    public Rating(Swimmer s, Dive dive, ArrayList<Double> scores) {
         this.swimmer = s;
         this.dive = dive;
         this.scores = scores;
@@ -27,45 +27,54 @@ public class Rating {
         return this.dive;
     }
 
-    public double calculatePT(){
+    public Swimmer getSwimmer() {
+        return swimmer;
+    }
+
+    public double calculatePT() {
         int maxIndex = 0;
-        for(int i = 0; i<scores.size();i++){
-            if(scores.get(i)>scores.get(maxIndex)){
+        for (int i = 0; i < scores.size(); i++) {
+            if (scores.get(i) > scores.get(maxIndex)) {
                 maxIndex = i;
             }
         }
-        scores.remove(maxIndex);
 
         int minIndex = 0;
-        for(int i = 0; i<scores.size();i++){
-            if(scores.get(i)<scores.get(minIndex)){
+        for (int i = 0; i < scores.size(); i++) {
+            if (scores.get(i) < scores.get(minIndex)) {
                 minIndex = i;
             }
         }
-        scores.remove(minIndex);
-
-        System.out.println(scores.toString());
-        this.PT = scores.stream().mapToDouble(Double::doubleValue).sum()*Double.valueOf(dive.getDifficulty())*0.6;
+        double savedMinIndex = scores.get(minIndex);
+        double savedMaxIndex = scores.get(maxIndex);
+        scores.set(minIndex, Double.MIN_VALUE);
+        scores.set(maxIndex, Double.MAX_VALUE);
+        this.PT = scores.stream()
+                .filter(i -> i != Double.MIN_VALUE && i != Double.MAX_VALUE)
+                .mapToDouble(Double::doubleValue)
+                .sum() * Double.valueOf(dive.getDifficulty()) * 0.6;
+        scores.set(maxIndex, savedMaxIndex);
+        scores.set(minIndex, savedMinIndex);
         return this.PT;
     }
 
-    public List<Double> getScores(){
+    public List<Double> getScores() {
         return this.scores;
     }
 
-    public void setScores(List<Double>scores){
+    public void setScores(List<Double> scores) {
         this.scores.stream().forEach(this.scores::add);
     }
 
-    public void generateScores(){
-        this.scores.addAll(IntStream.range(0,7).mapToObj(x -> Math.ceil(Math.random()*10)).collect(Collectors.toList()));
+    public void generateScores() {
+        this.scores.addAll(IntStream.range(0, 7).mapToObj(x -> Math.ceil(Math.random() * 10)).collect(Collectors.toList()));
     }
 
-    public String toString(){
+    public String toString() {
         return "[ Swimmer: " +
-                this.swimmer.toString()+"\n"+
+                this.swimmer.toString() + "\n" +
                 "Dive" +
-                this.dive.toString()+"\n"+
+                this.dive.toString() + "\n" +
                 " ]";
     }
 }

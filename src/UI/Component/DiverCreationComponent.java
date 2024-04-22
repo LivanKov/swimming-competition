@@ -11,7 +11,7 @@ public class DiverCreationComponent extends JPanel {
 
     private static int PANEL_COUNTER = 0;
 
-    public DiverCreationComponent(){
+    public DiverCreationComponent() {
         String[] nationalities = {
                 "GBR",
                 "USA",
@@ -34,24 +34,24 @@ public class DiverCreationComponent extends JPanel {
 
         JTextField nameField = new JTextField();
         JTextField yearField = new JTextField();
-        JLabel counterLabel = new JLabel("Player "+PANEL_COUNTER);
+        JLabel counterLabel = new JLabel("Player " + PANEL_COUNTER);
         JLabel nameLabel = new JLabel("Name:");
         JLabel yearLabel = new JLabel("Year of Birth:");
         JLabel nationalityLabel = new JLabel("Nationality:");
         JComboBox<String> nationalitySelectionBox = new JComboBox<String>(nationalities);
         nationalitySelectionBox.setLightWeightPopupEnabled(false);
         JPanel firstContainer = new JPanel();
-        firstContainer.setLayout(new GridLayout(3,1));
+        firstContainer.setLayout(new GridLayout(3, 1));
         JPanel secondContainer = new JPanel();
-        secondContainer.setLayout(new GridLayout(2,1));
+        secondContainer.setLayout(new GridLayout(2, 1));
         JPanel thirdContainer = new JPanel();
-        thirdContainer.setLayout(new GridLayout(2,1));
-        this.setSize(new Dimension(WIDTH,HEIGHT));
-        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        thirdContainer.setLayout(new GridLayout(2, 1));
+        this.setSize(new Dimension(WIDTH, HEIGHT));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(firstContainer);
         this.add(secondContainer);
         this.add(thirdContainer);
-        this.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.GRAY));
+        this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
         firstContainer.add(counterLabel);
         firstContainer.add(nameLabel);
         firstContainer.add(nameField);
@@ -61,11 +61,11 @@ public class DiverCreationComponent extends JPanel {
         thirdContainer.add(nationalitySelectionBox);
     }
 
-    public static int getPanelCounter(){
+    public static int getPanelCounter() {
         return PANEL_COUNTER;
     }
 
-    public static void setPanelCounter(int newVal){
-        PANEL_COUNTER=newVal;
+    public static void setPanelCounter(int newVal) {
+        PANEL_COUNTER = newVal;
     }
 }

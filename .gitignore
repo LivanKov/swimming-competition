@@ -2,3 +2,4 @@
 .metadata/
 .project
 src/module-info.java
+out/

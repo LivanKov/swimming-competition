@@ -6,15 +6,20 @@ public class Dive {
 
     private double difficulty;
 
-    public Dive(String diveId, double difficulty){
+    public Dive(String diveId, double difficulty) {
         this.diveId = diveId;
         this.difficulty = difficulty;
     }
 
-    public Dive(){};
+    public Dive() {
+    }
 
     public double getDifficulty() {
         return difficulty;
+    }
+
+    public void setDifficulty(double difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getDiveId() {
@@ -25,11 +30,7 @@ public class Dive {
         this.diveId = diveId;
     }
 
-    public void setDifficulty(double difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public String toString(){
+    public String toString() {
         return "[ Id: " +
                 this.getDiveId() +
                 ", Difficulity: " +

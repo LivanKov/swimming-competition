@@ -7,8 +7,6 @@ import UI.EventBus;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,19 +16,20 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
     private static final int WIDTH = 300;
 
     private static final int HEIGHT = 500;
-
+    private final Map<Swimmer, ArrayList<Dive>> swimmerDiveMap = new HashMap<Swimmer, ArrayList<Dive>>();
+    private final ArrayList<MatchingComponent> matchingComponentList;
     private EventBus eventBus;
 
-    private Map<Swimmer, ArrayList<Dive>> swimmerDiveMap = new HashMap<Swimmer,ArrayList<Dive>>();
-
-    private ArrayList<MatchingComponent> matchingComponentList;
-
-    public CompetitionMatchingWindow(){
+    public CompetitionMatchingWindow() {
         this.matchingComponentList = new ArrayList<MatchingComponent>();
     }
 
-    private void initializeMainContainer(){
-        this.setSize(new Dimension(WIDTH,HEIGHT));
+    public static void main(String[] args) {
+
+    }
+
+    private void initializeMainContainer() {
+        this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setLayout(new GridBagLayout());
         this.setVisible(true);
         JPanel mainContainer = new JPanel();
@@ -38,7 +37,7 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         JPanel buttonContainer = new JPanel();
 
         JLabel titleLabel = new JLabel("Assign dives to specific players");
-        mainContainer.setLayout(new GridLayout(2,1));
+        mainContainer.setLayout(new GridLayout(2, 1));
         GridBagConstraints gbcUpper = new GridBagConstraints();
         gbcUpper.gridx = 0;
         gbcUpper.gridy = 0;
@@ -58,16 +57,12 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
         gbcLower.fill = GridBagConstraints.BOTH;
 
         JButton finishButton = new JButton("Finish");
-        finishButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Matching finished");
-                for(MatchingComponent m : matchingComponentList){
-                    eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
-                    System.out.println("Added match between " + m.getSwimmer().getName()+ " and "+m.getSelectedDives());
-                }
-                eventBus.finishMatching();
+        finishButton.addActionListener(e -> {
+            for (MatchingComponent m : matchingComponentList) {
+                eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
+                System.out.println("Added match between " + m.getSwimmer().getName() + " and " + m.getSelectedDives());
             }
+            eventBus.finishMatching();
         });
         labelContainer.add(titleLabel);
         buttonContainer.add(finishButton);
@@ -77,7 +72,7 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
 
 
         ArrayList<Dive> diveList = this.eventBus.getCompetitionObject().getDives();
-        for(Swimmer s : this.eventBus.getCompetitionObject().getSwimmers()){
+        for (Swimmer s : this.eventBus.getCompetitionObject().getSwimmers()) {
             System.out.println("Swimmer");
             MatchingComponent matchComp = new MatchingComponent(s, diveList);
             matchingComponentList.add(matchComp);
@@ -86,7 +81,8 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
     }
 
     @Override
-    public void triggerEvent() {}
+    public void triggerEvent() {
+    }
 
     @Override
     public void addEventBus(EventBus eventBus) {
@@ -102,9 +98,5 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
     @Override
     public void exit() {
         this.dispose();
-    }
-
-    public static void main(String[] args) {
-
     }
 }
