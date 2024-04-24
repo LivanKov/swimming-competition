@@ -3,3 +3,4 @@
 .project
 src/module-info.java
 out/
+.idea/

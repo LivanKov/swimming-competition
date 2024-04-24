@@ -1,4 +1,4 @@
-package UI.Window;
+package UI.Panels;
 
 import DataLayer.Competition;
 import DataLayer.Dive;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class CompetitionCreationWindow extends JFrame implements CompetitionWindow {
+public class SecondPanel extends JPanel implements AbstractPanel {
 
     private final static int WIDTH = 600;
 
@@ -47,15 +47,11 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
 
     private JScrollPane diveScrollPane;
 
-    public CompetitionCreationWindow() {
+    public SecondPanel() {
         this.amountOfDivesPerPerson = 0;
         this.amountOfJudges = 0;
         this.playerPanelStack = new Stack<>();
         this.divePanelStack = new Stack<>();
-        this.setVisible(false);
-        this.setSize(new Dimension(WIDTH, HEIGHT));
-        this.setResizable(false);
-        this.setTitle("v1.0.0");
     }
 
     public static List<Component> extractComponents(Container parent) {
@@ -210,10 +206,6 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
                 eventBus.showMatchingWindow();
             }
         });
-
-        this.cancelButton.addActionListener(e -> {
-            exit();
-        });
     }
 
     private boolean sanitizeInputs() {
@@ -309,10 +301,5 @@ public class CompetitionCreationWindow extends JFrame implements CompetitionWind
         this.initializeContainers();
         this.initializeRemainingComponents();
         this.setVisible(true);
-    }
-
-    @Override
-    public void exit() {
-        this.dispose();
     }
 }

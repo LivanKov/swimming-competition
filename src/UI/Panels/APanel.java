@@ -1,4 +1,4 @@
-package UI.Window;
+package UI.Panels;
 
 import UI.EventBus;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-public class CompetitionStartingWindow extends JFrame implements CompetitionWindow {
+public class FirstPanel extends JPanel implements AbstractPanel {
 
     private final static int WIDTH = 500;
     private final static int HEIGHT = 500;
@@ -17,12 +17,9 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
 
     private EventBus eventBus;
 
-    public CompetitionStartingWindow() {
+    public FirstPanel() {
         this.setVisible(true);
         this.setSize(new Dimension(WIDTH, HEIGHT));
-        this.setTitle("v1.0.0");
-        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel upperPanel = new JPanel();
         Border upperPanelBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
         upperPanel.setBorder(upperPanelBorder);
@@ -91,10 +88,5 @@ public class CompetitionStartingWindow extends JFrame implements CompetitionWind
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void exit() {
-        this.dispose();
     }
 }

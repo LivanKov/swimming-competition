@@ -1,4 +1,4 @@
-package UI.Window;
+package UI.Panels;
 
 import UI.EventBus;
 

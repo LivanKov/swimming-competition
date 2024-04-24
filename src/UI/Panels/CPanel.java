@@ -1,4 +1,4 @@
-package UI.Window;
+package UI.Panels;
 
 import DataLayer.Dive;
 import DataLayer.Swimmer;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CompetitionMatchingWindow extends JFrame implements CompetitionWindow {
+public class LastPanel extends JPanel implements AbstractPanel {
 
     private static final int WIDTH = 500;
 
@@ -21,7 +21,7 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
     private final ArrayList<MatchingComponent> matchingComponentList;
     private EventBus eventBus;
 
-    public CompetitionMatchingWindow() {
+    public LastPanel() {
         this.matchingComponentList = new ArrayList<MatchingComponent>();
     }
 
@@ -97,10 +97,5 @@ public class CompetitionMatchingWindow extends JFrame implements CompetitionWind
     @Override
     public void start() {
         this.initializeMainContainer();
-    }
-
-    @Override
-    public void exit() {
-        this.dispose();
     }
 }
