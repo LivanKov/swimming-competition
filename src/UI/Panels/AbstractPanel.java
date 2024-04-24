@@ -2,11 +2,23 @@ package UI.Panels;
 
 import UI.EventBus;
 
-public interface AbstractPanel {
+import javax.swing.*;
 
-    void triggerEvent();
+public abstract class AbstractPanel extends JPanel {
 
-    void addEventBus(EventBus eventBus);
+    boolean isInitialized = false;
 
-    void start();
+    public abstract void triggerEvent();
+
+    public abstract void addEventBus(EventBus eventBus);
+
+    public abstract void init();
+
+    public boolean isInitialized(){
+        return isInitialized;
+    }
+
+    public abstract void refresh();
+
+
 }

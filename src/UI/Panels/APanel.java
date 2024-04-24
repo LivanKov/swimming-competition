@@ -6,15 +6,33 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-public class APanel extends JPanel implements AbstractPanel {
+public class APanel extends AbstractPanel {
 
-    private final JTextArea textArea;
+    private JTextArea textArea;
 
-    private final JButton exportButton;
+    private JButton exportButton;
 
     private EventBus eventBus;
 
-    public APanel() {
+    @Override
+    public void addEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
+        this.eventBus.subscribe(this);
+    }
+
+    @Override
+    public void triggerEvent() {
+        this.textArea.append("Created a competition\n");
+        this.textArea.append(eventBus.getCompetitionObject().getSwimmers().size() + " participants\n");
+        this.textArea.append(eventBus.getCompetitionObject().getDives().size() + " unique dives\n");
+        this.textArea.append("Calculating results...\n");
+        this.exportButton.setEnabled(true);
+        this.exportButton.setBackground(Color.GREEN);
+    }
+
+    @Override
+    public void init() {
+        isInitialized = true;
         JPanel upperPanel = new JPanel();
         Border upperPanelBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
         upperPanel.setBorder(upperPanelBorder);
@@ -40,7 +58,7 @@ public class APanel extends JPanel implements AbstractPanel {
         customCompButtonContainer.add(createCustomCompetitionButton);
         defaultCompButtonContainer.add(createDefaultCompetitionButton);
         createCustomCompetitionButton.addActionListener(e -> {
-            eventBus.showMatchCreatorWindow();
+            eventBus.showSecondPanel();
         });
         createDefaultCompetitionButton.addActionListener(e -> {
             eventBus.createDefaultCompetition();
@@ -48,8 +66,8 @@ public class APanel extends JPanel implements AbstractPanel {
         this.exportButton = new JButton("Export File");
         this.exportButton.setEnabled(false);
         exportButton.addActionListener(e -> {
-            System.out.println("Event checked");
             eventBus.printCompetitionResults();
+            eventBus.resetCompetition();
         });
         upperRightPanel.setLayout(new GridBagLayout());
         upperLeftPanel.add(customCompButtonContainer);
@@ -62,22 +80,8 @@ public class APanel extends JPanel implements AbstractPanel {
     }
 
     @Override
-    public void addEventBus(EventBus eventBus) {
-        this.eventBus = eventBus;
-        this.eventBus.subscribe(this);
-    }
-
-    @Override
-    public void triggerEvent() {
-        this.textArea.append("Created a competition\n");
-        this.textArea.append(eventBus.getCompetitionObject().getSwimmers().size() + " participants\n");
-        this.textArea.append(eventBus.getCompetitionObject().getDives().size() + " unique dives\n");
-        this.textArea.append("Calculating results...\n");
-        this.exportButton.setEnabled(true);
-        this.exportButton.setBackground(Color.GREEN);
-    }
-
-    @Override
-    public void start() {
+    public void refresh() {
+        this.removeAll();
+        this.init();
     }
 }

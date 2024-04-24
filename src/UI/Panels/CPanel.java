@@ -8,20 +8,19 @@ import UI.EventBus;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class CPanel extends JPanel implements AbstractPanel {
+public class CPanel extends AbstractPanel {
 
     private static final int WIDTH = 500;
 
     private static final int HEIGHT = 500;
 
-    private final Map<Swimmer, ArrayList<Dive>> swimmerDiveMap = new HashMap<Swimmer, ArrayList<Dive>>();
     private final ArrayList<MatchingComponent> matchingComponentList = new ArrayList<MatchingComponent>();
     private EventBus eventBus;
 
-    private void init() {
+    @Override
+    public void init() {
+        isInitialized = true;
         this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setLayout(new GridBagLayout());
         this.setVisible(true);
@@ -53,9 +52,12 @@ public class CPanel extends JPanel implements AbstractPanel {
         finishButton.addActionListener(e -> {
             for (MatchingComponent m : matchingComponentList) {
                 eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
-                System.out.println("Added match between " + m.getSwimmer() + " and " + m.getSelectedDives());
             }
             eventBus.finishMatching();
+        });
+        goBackButton.addActionListener(e ->{
+           eventBus.resetCompetition();
+           eventBus.showSecondPanel();
         });
         labelContainer.add(titleLabel);
         buttonContainer.add(finishButton);
@@ -72,11 +74,17 @@ public class CPanel extends JPanel implements AbstractPanel {
         }
         ArrayList<Dive> diveList = this.eventBus.getCompetitionObject().getDives();
         for (Swimmer s : this.eventBus.getCompetitionObject().getSwimmers()) {
-            System.out.println("Swimmer");
             MatchingComponent matchComp = new MatchingComponent(s, diveList);
             matchingComponentList.add(matchComp);
             mainContainer.add(matchComp);
         }
+    }
+
+    @Override
+    public void refresh() {
+        this.matchingComponentList.clear();
+        this.removeAll();
+        this.init();
     }
 
     @Override
@@ -87,10 +95,5 @@ public class CPanel extends JPanel implements AbstractPanel {
     public void addEventBus(EventBus eventBus) {
         this.eventBus = eventBus;
         eventBus.subscribe(this);
-    }
-
-    @Override
-    public void start() {
-        this.init();
     }
 }

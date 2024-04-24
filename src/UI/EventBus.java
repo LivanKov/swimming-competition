@@ -20,20 +20,24 @@ public class EventBus {
         panels.add(panel);
     }
 
-    public void showMatchCreatorWindow() {
+    public void showFirstPanel(){
+        mainFrameObject.switchToFirstPanel();
+    }
+
+    public void showSecondPanel() {
         mainFrameObject.switchToSecondPanel();
     }
 
-    public void showMatchingWindow() {
+    public void showThirdPanel() {
         mainFrameObject.switchToThirdPanel();
     }
 
     public void finishMatching() {
         competitionObject.assignRandomRatings();
-        for (AbstractPanel panel : panels) {
-            mainFrameObject.switchToFirstPanel();
-            if (panel instanceof APanel) {
-                panel.triggerEvent();
+        mainFrameObject.switchToFirstPanel();
+        for(AbstractPanel p : panels){
+            if(p instanceof APanel){
+                p.triggerEvent();
             }
         }
     }
@@ -43,7 +47,6 @@ public class EventBus {
     }
 
     public void createDefaultCompetition() {
-        System.out.println("Default competition created");
         this.competitionObject = Competition.getDefaultCompetition();
         this.setPrintGreenLight();
     }
@@ -54,6 +57,10 @@ public class EventBus {
                 panel.triggerEvent();
             }
         }
+    }
+
+    public void resetCompetition(){
+        this.competitionObject.reset();
     }
 
     public Competition getCompetitionObject() {

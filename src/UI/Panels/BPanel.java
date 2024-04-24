@@ -13,15 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class BPanel extends JPanel implements AbstractPanel {
+public class BPanel extends AbstractPanel {
 
-    private final int amountOfDivesPerPerson;
+    private final Stack<DiverCreationComponent> playerPanelStack = new Stack<>();
 
-    private final int amountOfJudges;
-
-    private final Stack<DiverCreationComponent> playerPanelStack;
-
-    private final Stack<DiveCreationComponent> divePanelStack;
+    private final Stack<DiveCreationComponent> divePanelStack = new Stack<>();
 
     private EventBus eventBus;
 
@@ -42,15 +38,6 @@ public class BPanel extends JPanel implements AbstractPanel {
     private JScrollPane playerScrollPane;
 
     private JScrollPane diveScrollPane;
-
-    public BPanel() {
-        this.amountOfDivesPerPerson = 0;
-        this.amountOfJudges = 0;
-        this.playerPanelStack = new Stack<>();
-        this.divePanelStack = new Stack<>();
-    }
-
-
 
     public static List<Component> extractComponents(Container parent) {
         List<Component> components = new ArrayList<>();
@@ -199,13 +186,14 @@ public class BPanel extends JPanel implements AbstractPanel {
                 matchNameField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
             } else {
                 eventBus.setCompetitionObject(competition);
-                eventBus.showMatchingWindow();
+                eventBus.showThirdPanel();
             }
         });
-    }
 
-    private boolean sanitizeInputs() {
-        return true;
+        this.cancelButton.addActionListener(e -> {
+            eventBus.resetCompetition();
+            eventBus.showFirstPanel();
+        });
     }
 
     private Competition fillCompetition() {
@@ -273,8 +261,6 @@ public class BPanel extends JPanel implements AbstractPanel {
         if (emptyFieldFound) {
             return null;
         }
-        newComp.setDivesPerSwimmer(amountOfDivesPerPerson);
-        newComp.setNumberOfJudges(amountOfJudges);
         newComp.setCompetitionName(matchNameField.getText());
         return newComp;
     }
@@ -290,12 +276,23 @@ public class BPanel extends JPanel implements AbstractPanel {
     }
 
     @Override
-    public void start() {
+    public void init() {
+        isInitialized = true;
         this.initializeButtons();
         this.initializeSpinners();
         this.distributeActionListeners();
         this.initializeContainers();
         this.initializeRemainingComponents();
         this.setVisible(true);
+    }
+
+    @Override
+    public void refresh() {
+        this.divePanelStack.clear();
+        this.playerPanelStack.clear();
+        DiveCreationComponent.setPanelCounter(0);
+        DiverCreationComponent.setPanelCounter(0);
+        this.removeAll();
+        this.init();
     }
 }

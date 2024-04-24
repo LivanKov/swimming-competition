@@ -10,17 +10,11 @@ public class Competition {
     private final HashMap<Swimmer, ArrayList<Dive>> swimmerDiveMatching;
     private final HashMap<Swimmer, ArrayList<Rating>> swimmerRatingMatch;
     private String competitionName;
-    private int numberOfJudges;
-
-    private int divesPerSwimmer;
-
 
     public Competition() {
         this.competitionName = "";
         this.swimmerNameMap = new HashMap<String, Swimmer>();
         this.diveIdMap = new HashMap<String, Dive>();
-        this.numberOfJudges = 0;
-        this.divesPerSwimmer = 0;
         this.swimmerDiveMatching = new HashMap<>();
         this.swimmerRatingMatch = new HashMap<>();
     }
@@ -79,9 +73,16 @@ public class Competition {
                 Rating newRating = new Rating(s,d,ratingList);
                 swimmerRatingMatch.get(s).add(newRating);
             }
-            System.out.println(swimmerRatingMatch.get(s));
         }
         this.calculateScore();
+    }
+
+    public void reset(){
+        this.swimmerNameMap.clear();
+        this.diveIdMap.clear();
+        this.swimmerDiveMatching.clear();
+        this.swimmerRatingMatch.clear();
+        this.competitionName = "";
     }
 
     public String getName() {
@@ -94,22 +95,6 @@ public class Competition {
 
     public void addSwimmerRatingMatch(Swimmer s, Rating r) {
         swimmerRatingMatch.computeIfAbsent(s, k -> new ArrayList<>()).add(r);
-    }
-
-    public int getDivesPerSwimmer() {
-        return divesPerSwimmer;
-    }
-
-    public void setDivesPerSwimmer(int divesPerSwimmer) {
-        this.divesPerSwimmer = divesPerSwimmer;
-    }
-
-    public int getNumberOfJudges() {
-        return numberOfJudges;
-    }
-
-    public void setNumberOfJudges(int numberOfJudges) {
-        this.numberOfJudges = numberOfJudges;
     }
 
     public ArrayList<Dive> getDives() {

@@ -17,7 +17,6 @@ public class TablePrinter {
 
     public static void printCompetitionResults(Competition competition) {
         String fileName = "results" + LocalDate.now() + ".txt";
-        System.out.println(fileName);
         TablePrinter.fillDataHolder(competition);
         try {
             FileWriter f = new FileWriter(fileName);
@@ -104,6 +103,11 @@ public class TablePrinter {
         String scoreMesh = "";
         DecimalFormat df = new DecimalFormat("#.##");
         int counter = 0;
+        if(ratings.isEmpty()){
+            return "-".repeat(dataHolder.getLongestDiveIdLen()) + "║" + "-".repeat(dataHolder.getLongestDiveDifficultyLen()) +
+                    ("║"+"-".repeat(dataHolder.getLongestRatingLen())).repeat(7)+"║"+"-".repeat(dataHolder.getLongestPT()) + "║"
+                    + "-".repeat(dataHolder.getLongestTDD()) + "║" + "-".repeat(dataHolder.getLongestTotalScore())+ "║\n";
+        }
         for (Rating r : ratings) {
             if (counter != 0) {
                 scoreMesh += "║" + " ".repeat(dataHolder.getNumLength()) + "║" + " ".repeat(dataHolder.getLongestNameLen()) + "║" + " ".repeat(dataHolder.getLongestNationalityNameLen()) + "║";

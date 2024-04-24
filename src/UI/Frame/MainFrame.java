@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 
     private ArrayList<AbstractPanel>panelStorage = new ArrayList<>();
 
-    private JPanel currentPanel;
+    private AbstractPanel currentPanel;
 
     public MainFrame(){
         super();
@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
         for(AbstractPanel p : this.panelStorage){
             if(p instanceof APanel){
                 this.currentPanel = (APanel)p;
+                p.init();
                 this.add(currentPanel);
                 this.revalidate();
                 this.repaint();
@@ -53,8 +54,9 @@ public class MainFrame extends JFrame {
         this.remove(currentPanel);
         for(AbstractPanel p : this.panelStorage){
             if(p instanceof APanel){
-                this.add((APanel)p);
-                this.currentPanel = (APanel)p;
+                this.currentPanel = p;
+                currentPanel.refresh();
+                this.add(currentPanel);
                 this.revalidate();
                 this.repaint();
             }
@@ -66,8 +68,8 @@ public class MainFrame extends JFrame {
         this.remove(currentPanel);
         for(AbstractPanel p : this.panelStorage){
             if(p instanceof BPanel){
-                this.currentPanel = (BPanel)p;
-                p.start();
+                this.currentPanel = p;
+                currentPanel.refresh();
                 this.add(currentPanel);
                 this.revalidate();
                 this.repaint();
@@ -77,13 +79,11 @@ public class MainFrame extends JFrame {
 
 
     public void switchToThirdPanel(){
-        System.out.println("Switching to third panel");
         this.remove(currentPanel);
         for(AbstractPanel p : this.panelStorage){
             if(p instanceof CPanel){
-                System.out.println("Found");
-                this.currentPanel = (CPanel)p;
-                p.start();
+                this.currentPanel = p;
+                currentPanel.refresh();
                 this.add(currentPanel);
                 this.revalidate();
                 this.repaint();
