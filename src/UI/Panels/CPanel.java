@@ -11,31 +11,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LastPanel extends JPanel implements AbstractPanel {
+public class CPanel extends JPanel implements AbstractPanel {
 
     private static final int WIDTH = 500;
 
     private static final int HEIGHT = 500;
 
     private final Map<Swimmer, ArrayList<Dive>> swimmerDiveMap = new HashMap<Swimmer, ArrayList<Dive>>();
-    private final ArrayList<MatchingComponent> matchingComponentList;
+    private final ArrayList<MatchingComponent> matchingComponentList = new ArrayList<MatchingComponent>();
     private EventBus eventBus;
 
-    public LastPanel() {
-        this.matchingComponentList = new ArrayList<MatchingComponent>();
-    }
-
-    private void initializeMainContainer() {
+    private void init() {
         this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setLayout(new GridBagLayout());
         this.setVisible(true);
         JPanel mainContainer = new JPanel();
         JPanel labelContainer = new JPanel();
         JPanel buttonContainer = new JPanel();
-
         JScrollPane mainContainerScrollPane = new JScrollPane(mainContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-
         JLabel titleLabel = new JLabel("Assign dives to specific players");
         GridBagConstraints gbcUpper = new GridBagConstraints();
         gbcUpper.gridy = 0;
@@ -55,7 +48,8 @@ public class LastPanel extends JPanel implements AbstractPanel {
         gbcUpper.weightx = 1.0;
         gbcLower.fill = GridBagConstraints.BOTH;
 
-        JButton finishButton = new JButton("Finish");
+        JButton finishButton = new JButton("Next");
+        JButton goBackButton = new JButton("Back");
         finishButton.addActionListener(e -> {
             for (MatchingComponent m : matchingComponentList) {
                 eventBus.getCompetitionObject().addSwimmerDiveMatch(m.getSwimmer(), new ArrayList<>(m.getSelectedDives()));
@@ -65,6 +59,7 @@ public class LastPanel extends JPanel implements AbstractPanel {
         });
         labelContainer.add(titleLabel);
         buttonContainer.add(finishButton);
+        buttonContainer.add(goBackButton);
         this.add(labelContainer, gbcUpper);
         this.add(mainContainerScrollPane, gbcMiddle);
         this.add(buttonContainer, gbcLower);
@@ -96,6 +91,6 @@ public class LastPanel extends JPanel implements AbstractPanel {
 
     @Override
     public void start() {
-        this.initializeMainContainer();
+        this.init();
     }
 }

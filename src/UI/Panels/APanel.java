@@ -6,10 +6,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-public class FirstPanel extends JPanel implements AbstractPanel {
-
-    private final static int WIDTH = 500;
-    private final static int HEIGHT = 500;
+public class APanel extends JPanel implements AbstractPanel {
 
     private final JTextArea textArea;
 
@@ -17,9 +14,7 @@ public class FirstPanel extends JPanel implements AbstractPanel {
 
     private EventBus eventBus;
 
-    public FirstPanel() {
-        this.setVisible(true);
-        this.setSize(new Dimension(WIDTH, HEIGHT));
+    public APanel() {
         JPanel upperPanel = new JPanel();
         Border upperPanelBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
         upperPanel.setBorder(upperPanelBorder);
@@ -60,13 +55,9 @@ public class FirstPanel extends JPanel implements AbstractPanel {
         upperLeftPanel.add(customCompButtonContainer);
         upperLeftPanel.add(defaultCompButtonContainer);
         upperRightPanel.add(exportButton);
-
         this.setLayout(new GridLayout(2, 1));
         this.add(upperPanel);
         this.add(lowerPanel);
-        this.add(lowerPanel);
-        JFileChooser fileChooser = new JFileChooser(".");
-        fileChooser.setControlButtonsAreShown(false);
         this.setVisible(true);
     }
 

@@ -2,13 +2,11 @@ package UI.Panels;
 
 import UI.EventBus;
 
-public interface CompetitionWindow {
+public interface AbstractPanel {
 
     void triggerEvent();
 
     void addEventBus(EventBus eventBus);
 
     void start();
-
-    void exit();
 }

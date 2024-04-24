@@ -1,62 +1,39 @@
 package UI;
 
 import DataLayer.Competition;
-import UI.Window.CompetitionCreationWindow;
-import UI.Window.CompetitionMatchingWindow;
-import UI.Window.CompetitionStartingWindow;
-import UI.Window.CompetitionWindow;
+import UI.Frame.MainFrame;
+import UI.Panels.APanel;
+import UI.Panels.AbstractPanel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventBus {
 
-    private final List<CompetitionWindow> frameList = new ArrayList<>();
+    private final List<AbstractPanel> panels = new ArrayList<>();
 
     private Competition competitionObject;
 
-    public void subscribe(CompetitionWindow frame) {
-        frameList.add(frame);
-    }
+    private MainFrame mainFrameObject;
 
-    public void notifyBaseWindow() {
-        for (CompetitionWindow frame : frameList) {
-            if (frame instanceof CompetitionStartingWindow) {
-                frame.triggerEvent();
-            }
-        }
+    public void subscribe(AbstractPanel panel) {
+        panels.add(panel);
     }
 
     public void showMatchCreatorWindow() {
-        for (CompetitionWindow frame : frameList) {
-            if (frame instanceof CompetitionCreationWindow) {
-                frame.start();
-            }
-        }
+        mainFrameObject.switchToSecondPanel();
     }
 
     public void showMatchingWindow() {
-        System.out.println("Event triggered");
-        for (CompetitionWindow frame : frameList) {
-            if (frame instanceof CompetitionCreationWindow) {
-                System.out.println("Exit");
-                frame.exit();
-            }
-            if (frame instanceof CompetitionMatchingWindow) {
-                System.out.println("Start");
-                frame.start();
-            }
-        }
+        mainFrameObject.switchToThirdPanel();
     }
 
     public void finishMatching() {
         competitionObject.assignRandomRatings();
-        for (CompetitionWindow frame : frameList) {
-            if (frame instanceof CompetitionMatchingWindow) {
-                frame.exit();
-            }
-            if (frame instanceof CompetitionStartingWindow) {
-                frame.triggerEvent();
+        for (AbstractPanel panel : panels) {
+            mainFrameObject.switchToFirstPanel();
+            if (panel instanceof APanel) {
+                panel.triggerEvent();
             }
         }
     }
@@ -72,9 +49,9 @@ public class EventBus {
     }
 
     public void setPrintGreenLight() {
-        for (CompetitionWindow frame : frameList) {
-            if (frame instanceof CompetitionStartingWindow) {
-                frame.triggerEvent();
+        for (AbstractPanel panel : panels) {
+            if (panel instanceof APanel) {
+                panel.triggerEvent();
             }
         }
     }
@@ -87,4 +64,5 @@ public class EventBus {
         this.competitionObject = competitionObject;
     }
 
+    public void setMainFrameObject(MainFrame mainFrameObject){ this.mainFrameObject = mainFrameObject; }
 }

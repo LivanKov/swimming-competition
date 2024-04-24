@@ -31,8 +31,11 @@ public class MatchingComponent extends JPanel {
         JPanel swimmerContainer = new JPanel();
         JPanel diveContainer = new JPanel();
         swimmerContainer.setLayout(new BoxLayout(swimmerContainer, BoxLayout.Y_AXIS));
-        //diveContainer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-        diveContainer.setLayout(new GridLayout(0, 1));
+        if(diveList.size()<=3){
+            diveContainer.setLayout(new GridLayout(3, 1));
+        }else{
+            diveContainer.setLayout(new GridLayout(diveList.size(),1));
+        }
         JScrollPane diveContainerScroll = new JScrollPane(diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(swimmerContainer);
         this.add(diveContainerScroll);

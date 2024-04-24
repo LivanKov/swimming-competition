@@ -13,11 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class SecondPanel extends JPanel implements AbstractPanel {
-
-    private final static int WIDTH = 600;
-
-    private final static int HEIGHT = 600;
+public class BPanel extends JPanel implements AbstractPanel {
 
     private final int amountOfDivesPerPerson;
 
@@ -47,12 +43,14 @@ public class SecondPanel extends JPanel implements AbstractPanel {
 
     private JScrollPane diveScrollPane;
 
-    public SecondPanel() {
+    public BPanel() {
         this.amountOfDivesPerPerson = 0;
         this.amountOfJudges = 0;
         this.playerPanelStack = new Stack<>();
         this.divePanelStack = new Stack<>();
     }
+
+
 
     public static List<Component> extractComponents(Container parent) {
         List<Component> components = new ArrayList<>();
@@ -67,8 +65,8 @@ public class SecondPanel extends JPanel implements AbstractPanel {
     }
 
     private void initializeButtons() {
-        this.matchButton = new JButton("Assign dives to Players");
-        this.cancelButton = new JButton("Cancel");
+        this.matchButton = new JButton("Next");
+        this.cancelButton = new JButton("Back");
     }
 
     private void initializeSpinners() {
@@ -84,7 +82,6 @@ public class SecondPanel extends JPanel implements AbstractPanel {
     }
 
     private void initializeRemainingComponents() {
-        JPanel mainPanel = new JPanel();
         this.matchNameField = new JTextField();
         matchNameField.setColumns(10);
         JLabel matchNameLabel = new JLabel("Competition Name:");
@@ -92,7 +89,7 @@ public class SecondPanel extends JPanel implements AbstractPanel {
         matchNamePanel.add(matchNameLabel);
         matchNamePanel.add(matchNameField);
         matchNamePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
-        mainPanel.add(matchNamePanel);
+        this.add(matchNamePanel);
         JPanel playerCreationPanel = new JPanel();
         playerCreationPanel.setLayout(new GridBagLayout());
         JPanel diveCreationPanel = new JPanel();
@@ -111,8 +108,7 @@ public class SecondPanel extends JPanel implements AbstractPanel {
         diveCreationPanel.add(subDiveLabelPanel, gbc);
         lowerPanel.add(lowerUpperPanel);
         lowerPanel.add(lowerLowerPanel);
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        this.add(mainPanel);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.playerScrollPane = new JScrollPane(this.swimmerContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.diveScrollPane = new JScrollPane(this.diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         gbc.gridy = 1;
@@ -120,9 +116,9 @@ public class SecondPanel extends JPanel implements AbstractPanel {
         gbc.weighty = 8.0;
         playerCreationPanel.add(this.playerScrollPane, gbc);
         diveCreationPanel.add(this.diveScrollPane, gbc);
-        mainPanel.add(playerCreationPanel);
-        mainPanel.add(diveCreationPanel);
-        mainPanel.add(lowerPanel);
+        this.add(playerCreationPanel);
+        this.add(diveCreationPanel);
+        this.add(lowerPanel);
         JLabel playerSelectLabel = new JLabel("Choose the amount of players");
         JLabel diveSelectLabel = new JLabel("Choose the amount of jumps");
         subPlayerLabelPanel.add(playerSpinner);
