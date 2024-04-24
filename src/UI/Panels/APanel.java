@@ -57,12 +57,8 @@ public class APanel extends AbstractPanel {
 
         customCompButtonContainer.add(createCustomCompetitionButton);
         defaultCompButtonContainer.add(createDefaultCompetitionButton);
-        createCustomCompetitionButton.addActionListener(e -> {
-            eventBus.showSecondPanel();
-        });
-        createDefaultCompetitionButton.addActionListener(e -> {
-            eventBus.createDefaultCompetition();
-        });
+        createCustomCompetitionButton.addActionListener(e -> eventBus.showSecondPanel());
+        createDefaultCompetitionButton.addActionListener(e -> eventBus.createDefaultCompetition());
         this.exportButton = new JButton("Export File");
         this.exportButton.setEnabled(false);
         exportButton.addActionListener(e -> {

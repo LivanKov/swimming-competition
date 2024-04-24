@@ -13,8 +13,8 @@ public class Competition {
 
     public Competition() {
         this.competitionName = "";
-        this.swimmerNameMap = new HashMap<String, Swimmer>();
-        this.diveIdMap = new HashMap<String, Dive>();
+        this.swimmerNameMap = new HashMap<>();
+        this.diveIdMap = new HashMap<>();
         this.swimmerDiveMatching = new HashMap<>();
         this.swimmerRatingMatch = new HashMap<>();
     }
@@ -30,8 +30,8 @@ public class Competition {
                 new Swimmer("Yona Knight-Wisdom", 1995, "JAM"),
                 new Swimmer("Patrick Hausding", 1989, "GER"),
                 new Swimmer("Alexis Jandard", 1997, "FRA"));
-        defaultSwimmerList.stream().forEach(defaultCompetition::addSwimmer);
-        HashSet<Dive> defaultDiveList = new HashSet<Dive>(Arrays.asList(
+        defaultSwimmerList.forEach(defaultCompetition::addSwimmer);
+        HashSet<Dive> defaultDiveList = new HashSet<>(Arrays.asList(
                 new Dive("5154B", 3.4),
                 new Dive("407C", 3.4),
                 new Dive("307C", 3.5),
@@ -45,7 +45,7 @@ public class Competition {
                 new Dive("5156B", 3.9),
                 new Dive("405B", 3.0)
         ));
-        defaultDiveList.stream().forEach(defaultCompetition::addDive);
+        defaultDiveList.forEach(defaultCompetition::addDive);
         defaultCompetition.assignDefaultSwimmerDiveMatching();
         defaultCompetition.assignDefaultRatings();
         defaultCompetition.calculateScore();
@@ -63,21 +63,21 @@ public class Competition {
         this.diveIdMap.put(d.getDiveId(), d);
     }
 
-    public void assignRandomRatings(){
-        for(Swimmer s : this.swimmerDiveMatching.keySet()){
-            this.swimmerRatingMatch.put(s,new ArrayList<Rating>());
-            for(Dive d : this.swimmerDiveMatching.get(s)){
-                ArrayList<Double>ratingList = new Random().doubles(7, 0.0, 10.0)
+    public void assignRandomRatings() {
+        for (Swimmer s : this.swimmerDiveMatching.keySet()) {
+            this.swimmerRatingMatch.put(s, new ArrayList<>());
+            for (Dive d : this.swimmerDiveMatching.get(s)) {
+                ArrayList<Double> ratingList = new Random().doubles(7, 0.0, 10.0)
                         .boxed()
                         .collect(Collectors.toCollection(ArrayList::new));
-                Rating newRating = new Rating(s,d,ratingList);
+                Rating newRating = new Rating(s, d, ratingList);
                 swimmerRatingMatch.get(s).add(newRating);
             }
         }
         this.calculateScore();
     }
 
-    public void reset(){
+    public void reset() {
         this.swimmerNameMap.clear();
         this.diveIdMap.clear();
         this.swimmerDiveMatching.clear();
@@ -85,24 +85,16 @@ public class Competition {
         this.competitionName = "";
     }
 
-    public String getName() {
-        return this.competitionName;
-    }
-
     public void addSwimmerDiveMatch(Swimmer s, ArrayList<Dive> diveList) {
         swimmerDiveMatching.computeIfAbsent(s, k -> diveList);
     }
 
-    public void addSwimmerRatingMatch(Swimmer s, Rating r) {
-        swimmerRatingMatch.computeIfAbsent(s, k -> new ArrayList<>()).add(r);
-    }
-
     public ArrayList<Dive> getDives() {
-        return new ArrayList<Dive>(diveIdMap.values());
+        return new ArrayList<>(diveIdMap.values());
     }
 
     public ArrayList<Swimmer> getSwimmers() {
-        return new ArrayList<Swimmer>(swimmerNameMap.values());
+        return new ArrayList<>(swimmerNameMap.values());
     }
 
     public String getCompetitionName() {
@@ -119,18 +111,14 @@ public class Competition {
 
     private void assignTDD() {
         for (Swimmer s : this.swimmerDiveMatching.keySet()) {
-            s.setTDD(this.swimmerDiveMatching.get(s).stream().mapToDouble(x -> Double.valueOf(x.getDifficulty())).sum());
+            s.setTDD(this.swimmerDiveMatching.get(s).stream().mapToDouble(Dive::getDifficulty).sum());
         }
     }
 
     private void assignTotalScore() {
         for (Swimmer s : this.swimmerRatingMatch.keySet()) {
-            s.setTotalPoints(this.swimmerRatingMatch.get(s).stream().mapToDouble(x -> x.calculatePT()).sum());
+            s.setTotalPoints(this.swimmerRatingMatch.get(s).stream().mapToDouble(Rating::calculatePT).sum());
         }
-    }
-
-    public HashMap<String, Dive> getDiveIdMap() {
-        return diveIdMap;
     }
 
     public HashMap<String, Swimmer> getSwimmerNameMap() {
@@ -303,20 +291,8 @@ public class Competition {
                         6.0, 6.5, 6.0, 5.5, 5.5, 5.5, 6.0))))));
     }
 
-    public void createRatings(){
-
-    }
-
     public void calculateScore() {
         assignTDD();
         assignTotalScore();
-    }
-
-    public void conductCompetition() {
-
-    }
-
-    public void generateRandomJudgeScores() {
-
     }
 }

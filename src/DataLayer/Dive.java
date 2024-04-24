@@ -33,7 +33,7 @@ public class Dive {
     public String toString() {
         return "[ Id: " +
                 this.getDiveId() +
-                ", Difficulity: " +
+                ", Difficulty: " +
                 this.getDifficulty() +
                 " ]";
     }

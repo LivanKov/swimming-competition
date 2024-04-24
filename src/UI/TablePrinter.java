@@ -30,19 +30,19 @@ public class TablePrinter {
     private static String createTableString(Competition competition) {
         String table = "";
         table += TablePrinter.createCompetitionTitle(competition.getCompetitionName());
-        table += TablePrinter.createBar(competition, true);
+        table += TablePrinter.createBar(true);
         table += TablePrinter.createTableData(competition);
-        table += TablePrinter.createBar(competition, false);
+        table += TablePrinter.createBar(false);
         return table;
     }
 
-    private static String createCompetitionTitle(String competitionName){
-        String upperBar = "╔"+"═".repeat(competitionName.length() + LocalDate.now().toString().length()+3) + "╗\n";
-        String title = "║"+competitionName+" - "+LocalDate.now()+"║\n";
+    private static String createCompetitionTitle(String competitionName) {
+        String upperBar = "╔" + "═".repeat(competitionName.length() + LocalDate.now().toString().length() + 3) + "╗\n";
+        String title = "║" + competitionName + " - " + LocalDate.now() + "║\n";
         return upperBar + title;
     }
 
-    private static String createBar(Competition competition, boolean upper) {
+    private static String createBar(boolean upper) {
         String bar = upper ? "╔" : "╚";
         bar += "═".repeat(TablePrinter.dataHolder.getNumLength());
         bar += upper ? "╦" : "╩";
@@ -103,10 +103,10 @@ public class TablePrinter {
         String scoreMesh = "";
         DecimalFormat df = new DecimalFormat("#.##");
         int counter = 0;
-        if(ratings.isEmpty()){
+        if (ratings.isEmpty()) {
             return "-".repeat(dataHolder.getLongestDiveIdLen()) + "║" + "-".repeat(dataHolder.getLongestDiveDifficultyLen()) +
-                    ("║"+"-".repeat(dataHolder.getLongestRatingLen())).repeat(7)+"║"+"-".repeat(dataHolder.getLongestPT()) + "║"
-                    + "-".repeat(dataHolder.getLongestTDD()) + "║" + "-".repeat(dataHolder.getLongestTotalScore())+ "║\n";
+                    ("║" + "-".repeat(dataHolder.getLongestRatingLen())).repeat(7) + "║" + "-".repeat(dataHolder.getLongestPT()) + "║"
+                    + "-".repeat(dataHolder.getLongestTDD()) + "║" + "-".repeat(dataHolder.getLongestTotalScore()) + "║\n";
         }
         for (Rating r : ratings) {
             if (counter != 0) {
@@ -121,7 +121,7 @@ public class TablePrinter {
             }
             scoreMesh += df.format(r.getPT()) + " ".repeat(dataHolder.getLongestPT() - df.format(r.getPT()).length()) + "║";
             scoreMesh += (counter == 0 ? df.format(r.getSwimmer().getTDD()) : " ".repeat(df.format(r.getSwimmer().getTDD()).length())) + " ".repeat(dataHolder.getLongestTDD() - df.format(r.getSwimmer().getTDD()).length()) + "║";
-            scoreMesh += (counter == 0 ? df.format(r.getSwimmer().getTotalScore()) : " ".repeat(df.format(r.getSwimmer().getTotalScore()).length())) +" ".repeat(dataHolder.getLongestTotalScore() - df.format(r.getSwimmer().getTotalScore()).length()) + "║\n";
+            scoreMesh += (counter == 0 ? df.format(r.getSwimmer().getTotalScore()) : " ".repeat(df.format(r.getSwimmer().getTotalScore()).length())) + " ".repeat(dataHolder.getLongestTotalScore() - df.format(r.getSwimmer().getTotalScore()).length()) + "║\n";
             counter++;
         }
         return scoreMesh;
@@ -130,15 +130,15 @@ public class TablePrinter {
     private static void fillDataHolder(Competition competition) {
         TablePrinter.dataHolder = new TableDataHolder();
         DecimalFormat df = new DecimalFormat("#.##");
-        dataHolder.setNumLength(String.valueOf(competition.getSwimmerDiveMatching().size()).length() < 2 ? 2 : String.valueOf(competition.getSwimmerDiveMatching().size()).length());
-        dataHolder.setLongestNameLen(competition.getSwimmerNameMap().keySet().stream().map(x -> x.length()).max(Comparator.naturalOrder()).map(z -> z > 4 ? z : 4).orElse(4));
+        dataHolder.setNumLength(Math.max(String.valueOf(competition.getSwimmerDiveMatching().size()).length(), 2));
+        dataHolder.setLongestNameLen(competition.getSwimmerNameMap().keySet().stream().map(String::length).max(Comparator.naturalOrder()).filter(z -> z > 4).orElse(4));
         dataHolder.setLongestNationalityNameLen(3);
-        dataHolder.setLongestDiveIdLen(competition.getDives().stream().map(x -> x.getDiveId().length()).max(Comparator.naturalOrder()).map(z -> z > 4 ? z : 4).orElse(4));
-        dataHolder.setLongestDiveDifficultyLen(competition.getDives().stream().map(x -> df.format(x.getDifficulty()).length()).max(Comparator.naturalOrder()).map(z -> z > 2 ? z : 2).orElse(2));
-        dataHolder.setLongestRatingLen(competition.getSwimmerRatingMatch().values().stream().map(x -> x.stream().map(y -> y.getScores().stream().map(z -> df.format(z).length()).max(Comparator.naturalOrder()).orElse(5)).max(Comparator.naturalOrder()).orElse(4)).max(Comparator.naturalOrder()).map(z -> z > 2 ? z : 2).orElse(2));
-        dataHolder.setLongestPT(competition.getSwimmerRatingMatch().values().stream().map(x -> x.stream().map(y -> df.format(y.getPT()).length()).max(Comparator.naturalOrder()).orElse(5)).max(Comparator.naturalOrder()).map(z -> z > 2 ? z : 2).orElse(2));
-        dataHolder.setLongestTDD(competition.getSwimmers().stream().map(x -> df.format(x.getTDD()).length()).max(Comparator.naturalOrder()).map(z -> z > 3 ? z : 3).orElse(3));
-        dataHolder.setLongestTotalScore(competition.getSwimmers().stream().map(x -> df.format(x.getTotalScore()).length()).max(Comparator.naturalOrder()).map(z -> z > 5 ? z : 5).orElse(5));
+        dataHolder.setLongestDiveIdLen(competition.getDives().stream().map(x -> x.getDiveId().length()).max(Comparator.naturalOrder()).filter(z -> z > 4).orElse(4));
+        dataHolder.setLongestDiveDifficultyLen(competition.getDives().stream().map(x -> df.format(x.getDifficulty()).length()).max(Comparator.naturalOrder()).filter(z -> z > 2).orElse(2));
+        dataHolder.setLongestRatingLen(competition.getSwimmerRatingMatch().values().stream().map(x -> x.stream().map(y -> y.getScores().stream().map(z -> df.format(z).length()).max(Comparator.naturalOrder()).orElse(5)).max(Comparator.naturalOrder()).orElse(4)).max(Comparator.naturalOrder()).filter(z -> z > 2).orElse(2));
+        dataHolder.setLongestPT(competition.getSwimmerRatingMatch().values().stream().map(x -> x.stream().map(y -> df.format(y.getPT()).length()).max(Comparator.naturalOrder()).orElse(5)).max(Comparator.naturalOrder()).filter(z -> z > 2).orElse(2));
+        dataHolder.setLongestTDD(competition.getSwimmers().stream().map(x -> df.format(x.getTDD()).length()).max(Comparator.naturalOrder()).filter(z -> z > 3).orElse(3));
+        dataHolder.setLongestTotalScore(competition.getSwimmers().stream().map(x -> df.format(x.getTotalScore()).length()).max(Comparator.naturalOrder()).filter(z -> z > 5).orElse(5));
     }
 
 

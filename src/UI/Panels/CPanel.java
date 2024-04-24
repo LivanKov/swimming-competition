@@ -15,7 +15,7 @@ public class CPanel extends AbstractPanel {
 
     private static final int HEIGHT = 500;
 
-    private final ArrayList<MatchingComponent> matchingComponentList = new ArrayList<MatchingComponent>();
+    private final ArrayList<MatchingComponent> matchingComponentList = new ArrayList<>();
     private EventBus eventBus;
 
     @Override
@@ -27,7 +27,7 @@ public class CPanel extends AbstractPanel {
         JPanel mainContainer = new JPanel();
         JPanel labelContainer = new JPanel();
         JPanel buttonContainer = new JPanel();
-        JScrollPane mainContainerScrollPane = new JScrollPane(mainContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane mainContainerScrollPane = new JScrollPane(mainContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         JLabel titleLabel = new JLabel("Assign dives to specific players");
         GridBagConstraints gbcUpper = new GridBagConstraints();
         gbcUpper.gridy = 0;
@@ -38,13 +38,13 @@ public class CPanel extends AbstractPanel {
         GridBagConstraints gbcMiddle = new GridBagConstraints();
         gbcMiddle.gridy = 1;
         gbcMiddle.weighty = 0.8;
-        gbcUpper.weightx = 1.0;
+        gbcMiddle.weightx = 1.0;
         gbcMiddle.fill = GridBagConstraints.BOTH;
 
         GridBagConstraints gbcLower = new GridBagConstraints();
         gbcLower.gridy = 2;
         gbcLower.weighty = 0.1;
-        gbcUpper.weightx = 1.0;
+        gbcLower.weightx = 1.0;
         gbcLower.fill = GridBagConstraints.BOTH;
 
         JButton finishButton = new JButton("Next");
@@ -55,9 +55,9 @@ public class CPanel extends AbstractPanel {
             }
             eventBus.finishMatching();
         });
-        goBackButton.addActionListener(e ->{
-           eventBus.resetCompetition();
-           eventBus.showSecondPanel();
+        goBackButton.addActionListener(e -> {
+            eventBus.resetCompetition();
+            eventBus.showSecondPanel();
         });
         labelContainer.add(titleLabel);
         buttonContainer.add(finishButton);
@@ -67,10 +67,10 @@ public class CPanel extends AbstractPanel {
         this.add(buttonContainer, gbcLower);
 
 
-        if(this.eventBus.getCompetitionObject().getSwimmers().size()>4){
+        if (this.eventBus.getCompetitionObject().getSwimmers().size() > 4) {
             mainContainer.setLayout(new GridLayout(this.eventBus.getCompetitionObject().getSwimmers().size(), 1));
-        }else{
-            mainContainer.setLayout(new GridLayout(4,1));
+        } else {
+            mainContainer.setLayout(new GridLayout(4, 1));
         }
         ArrayList<Dive> diveList = this.eventBus.getCompetitionObject().getDives();
         for (Swimmer s : this.eventBus.getCompetitionObject().getSwimmers()) {

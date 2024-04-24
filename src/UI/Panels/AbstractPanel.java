@@ -14,10 +14,6 @@ public abstract class AbstractPanel extends JPanel {
 
     public abstract void init();
 
-    public boolean isInitialized(){
-        return isInitialized;
-    }
-
     public abstract void refresh();
 
 

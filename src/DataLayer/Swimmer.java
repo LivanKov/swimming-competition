@@ -37,10 +37,6 @@ public class Swimmer {
         this.TDD = TDD;
     }
 
-    public double getTotalPoints() {
-        return totalPoints;
-    }
-
     public void setTotalPoints(double totalPoints) {
         this.totalPoints = totalPoints;
     }

@@ -198,9 +198,9 @@ public class BPanel extends AbstractPanel {
 
     private Competition fillCompetition() {
         Competition newComp = new Competition();
-        ArrayList<JPanel> stackPlayerList = new ArrayList<JPanel>(playerPanelStack);
+        ArrayList<JPanel> stackPlayerList = new ArrayList<>(playerPanelStack);
         int amountOfSwimmers = stackPlayerList.size();
-        ArrayList<JPanel> stackDiveList = new ArrayList<JPanel>(divePanelStack);
+        ArrayList<JPanel> stackDiveList = new ArrayList<>(divePanelStack);
         stackPlayerList.addAll(stackDiveList);
         boolean emptyFieldFound = false;
         int counter = 0;
@@ -239,8 +239,8 @@ public class BPanel extends AbstractPanel {
                                 Dive d = (Dive) recentInstance;
                                 if (d != null) {
                                     try {
-                                        double difficulity = Double.parseDouble(((JTextField) component).getText());
-                                        d.setDifficulty(difficulity);
+                                        double difficulty = Double.parseDouble(((JTextField) component).getText());
+                                        d.setDifficulty(difficulty);
                                     } catch (NumberFormatException e) {
                                         ((JTextField) component).setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
                                     }

@@ -38,7 +38,7 @@ public class DiverCreationComponent extends JPanel {
         JLabel nameLabel = new JLabel("Name:");
         JLabel yearLabel = new JLabel("Year of Birth:");
         JLabel nationalityLabel = new JLabel("Nationality:");
-        JComboBox<String> nationalitySelectionBox = new JComboBox<String>(nationalities);
+        JComboBox<String> nationalitySelectionBox = new JComboBox<>(nationalities);
         nationalitySelectionBox.setLightWeightPopupEnabled(false);
         JPanel firstContainer = new JPanel();
         firstContainer.setLayout(new GridLayout(3, 1));

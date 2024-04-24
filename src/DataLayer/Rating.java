@@ -2,8 +2,6 @@ package DataLayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Rating {
 
@@ -52,7 +50,7 @@ public class Rating {
         this.PT = scores.stream()
                 .filter(i -> i != Double.MIN_VALUE && i != Double.MAX_VALUE)
                 .mapToDouble(Double::doubleValue)
-                .sum() * Double.valueOf(dive.getDifficulty()) * 0.6;
+                .sum() * dive.getDifficulty() * 0.6;
         scores.set(maxIndex, savedMaxIndex);
         scores.set(minIndex, savedMinIndex);
         return this.PT;
@@ -60,14 +58,6 @@ public class Rating {
 
     public List<Double> getScores() {
         return this.scores;
-    }
-
-    public void setScores(List<Double> scores) {
-        this.scores.stream().forEach(this.scores::add);
-    }
-
-    public void generateScores() {
-        this.scores.addAll(IntStream.range(0, 7).mapToObj(x -> Math.ceil(Math.random() * 10)).collect(Collectors.toList()));
     }
 
     public String toString() {

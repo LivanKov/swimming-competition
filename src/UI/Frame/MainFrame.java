@@ -15,15 +15,15 @@ public class MainFrame extends JFrame {
 
     private final static int HEIGHT = 600;
 
-    private ArrayList<AbstractPanel>panelStorage = new ArrayList<>();
+    private final ArrayList<AbstractPanel> panelStorage = new ArrayList<>();
 
     private AbstractPanel currentPanel;
 
-    public MainFrame(){
+    public MainFrame() {
         super();
     }
 
-    public void init(){
+    public void init() {
         this.setVisible(true);
         this.setSize(new Dimension(WIDTH, HEIGHT));
         this.setResizable(false);
@@ -31,29 +31,29 @@ public class MainFrame extends JFrame {
         this.setTitle("v1.0.0");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        for(AbstractPanel p : this.panelStorage){
-            if(p instanceof APanel){
-                this.currentPanel = (APanel)p;
+        for (AbstractPanel p : this.panelStorage) {
+            if (p instanceof APanel) {
+                this.currentPanel = p;
                 p.init();
                 this.add(currentPanel);
                 this.revalidate();
                 this.repaint();
             }
         }
-        if(this.currentPanel == null  || panelStorage.size()<3){
+        if (this.currentPanel == null || panelStorage.size() < 3) {
             throw new RuntimeException("Panels have not been initialized");
         }
     }
 
 
-    public void addPanel(AbstractPanel panel){
+    public void addPanel(AbstractPanel panel) {
         this.panelStorage.add(panel);
     }
 
-    public void switchToFirstPanel(){
+    public void switchToFirstPanel() {
         this.remove(currentPanel);
-        for(AbstractPanel p : this.panelStorage){
-            if(p instanceof APanel){
+        for (AbstractPanel p : this.panelStorage) {
+            if (p instanceof APanel) {
                 this.currentPanel = p;
                 currentPanel.refresh();
                 this.add(currentPanel);
@@ -64,10 +64,10 @@ public class MainFrame extends JFrame {
     }
 
 
-    public void switchToSecondPanel(){
+    public void switchToSecondPanel() {
         this.remove(currentPanel);
-        for(AbstractPanel p : this.panelStorage){
-            if(p instanceof BPanel){
+        for (AbstractPanel p : this.panelStorage) {
+            if (p instanceof BPanel) {
                 this.currentPanel = p;
                 currentPanel.refresh();
                 this.add(currentPanel);
@@ -78,10 +78,10 @@ public class MainFrame extends JFrame {
     }
 
 
-    public void switchToThirdPanel(){
+    public void switchToThirdPanel() {
         this.remove(currentPanel);
-        for(AbstractPanel p : this.panelStorage){
-            if(p instanceof CPanel){
+        for (AbstractPanel p : this.panelStorage) {
+            if (p instanceof CPanel) {
                 this.currentPanel = p;
                 currentPanel.refresh();
                 this.add(currentPanel);

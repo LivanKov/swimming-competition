@@ -20,7 +20,7 @@ public class EventBus {
         panels.add(panel);
     }
 
-    public void showFirstPanel(){
+    public void showFirstPanel() {
         mainFrameObject.switchToFirstPanel();
     }
 
@@ -35,8 +35,8 @@ public class EventBus {
     public void finishMatching() {
         competitionObject.assignRandomRatings();
         mainFrameObject.switchToFirstPanel();
-        for(AbstractPanel p : panels){
-            if(p instanceof APanel){
+        for (AbstractPanel p : panels) {
+            if (p instanceof APanel) {
                 p.triggerEvent();
             }
         }
@@ -59,7 +59,7 @@ public class EventBus {
         }
     }
 
-    public void resetCompetition(){
+    public void resetCompetition() {
         this.competitionObject.reset();
     }
 
@@ -71,5 +71,7 @@ public class EventBus {
         this.competitionObject = competitionObject;
     }
 
-    public void setMainFrameObject(MainFrame mainFrameObject){ this.mainFrameObject = mainFrameObject; }
+    public void setMainFrameObject(MainFrame mainFrameObject) {
+        this.mainFrameObject = mainFrameObject;
+    }
 }

@@ -9,6 +9,10 @@ import UI.Panels.CPanel;
 
 public class Main {
     public static void main(String[] args) {
+        runApplication();
+    }
+
+    private static void runApplication() {
         MainFrame frame = new MainFrame();
         Competition competition = new Competition();
         EventBus eventBus = new EventBus();

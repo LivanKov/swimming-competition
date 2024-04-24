@@ -19,9 +19,9 @@ public class MatchingComponent extends JPanel {
     public MatchingComponent(Swimmer s, List<Dive> list) {
         this.swimmer = s;
         this.diveList = list;
-        this.checkBoxes = new ArrayList<DiveCheckBoxComponent>();
+        this.checkBoxes = new ArrayList<>();
         this.createComponent();
-        this.setSize(400,100);
+        this.setSize(400, 100);
     }
 
     private void createComponent() {
@@ -31,10 +31,10 @@ public class MatchingComponent extends JPanel {
         JPanel swimmerContainer = new JPanel();
         JPanel diveContainer = new JPanel();
         swimmerContainer.setLayout(new BoxLayout(swimmerContainer, BoxLayout.Y_AXIS));
-        if(diveList.size()<=3){
+        if (diveList.size() <= 3) {
             diveContainer.setLayout(new GridLayout(3, 1));
-        }else{
-            diveContainer.setLayout(new GridLayout(diveList.size(),1));
+        } else {
+            diveContainer.setLayout(new GridLayout(diveList.size(), 1));
         }
         JScrollPane diveContainerScroll = new JScrollPane(diveContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(swimmerContainer);
@@ -54,7 +54,7 @@ public class MatchingComponent extends JPanel {
 
 
     public List<Dive> getSelectedDives() {
-        ArrayList<Dive> selectedObjects = new ArrayList<Dive>();
+        ArrayList<Dive> selectedObjects = new ArrayList<>();
         for (DiveCheckBoxComponent c : this.checkBoxes) {
             if (c.isSelected()) {
                 selectedObjects.add(c.getDive());
@@ -67,7 +67,4 @@ public class MatchingComponent extends JPanel {
         return swimmer;
     }
 
-    public List<Dive> getDiveList() {
-        return diveList;
-    }
 }
